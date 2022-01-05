@@ -1,0 +1,49 @@
+.cutter-container{
+    width: 100%;
+}
+
+.cutter-slider{
+   -webkit-appearance: none;
+}
+
+.audio-progress{
+    -webkit-appearance: none;
+}
+.audio-progress::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    background-color: red;
+    appearance: none;
+    width: 10px; /* Set a specific slider handle width */
+    height: 10px; /* Slider handle height */
+    border-radius: 50%;
+    position: relative;
+    top:-3px;
+}
+.audio-progress::-webkit-slider-runnable-track{
+    -webkit-appearance: none;
+    background-color: black;
+    appearance: none;
+    height: 3px; /* Slider handle height */
+    border-radius: 5px;
+}
+.cutter-slider::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    width: 10px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #4787e7;
+    z-index: 2;
+    position: relative;
+    top:-15px;
+}
+#range-2{
+    position: relative;
+    top:-25px;
+    direction: rtl;
+}
+
+.cutter-slider::-webkit-slider-runnable-track{
+    -webkit-appearance: none;
+    height: 2px;
+    background-color: black;
+}
