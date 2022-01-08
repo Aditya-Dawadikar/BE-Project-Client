@@ -1,11 +1,12 @@
 import React,{useState,useEffect,useRef} from 'react'
-import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Overlay,OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 import PlayIcon from '../../assets/icons/play.png'
 import PauseIcon from '../../assets/icons/pause.png'
 import CropIcon from '../../assets/icons/crop.png'
 import TrashIcon from '../../assets/icons/delete.png'
 import WaveIcon from '../../assets/icons/wave.png'
+import HelpIcon from '../../assets/icons/helpblack.png'
 
 const AudioEditor = () => {
 
@@ -23,6 +24,9 @@ const AudioEditor = () => {
     const [instance,setinstance] = useState(0)
     const [timestamps,settimestamps] = useState({start:0,end:0})
     const [seglist,setSeglist] = useState([])
+
+    const [show, setShow] = useState(false);
+    const target = useRef(null);
 
     // handler for visualization
     var openFile = function(event) {
@@ -201,7 +205,7 @@ const AudioEditor = () => {
         let requiredSegment = seglist[index]
         setactualendpoints(requiredSegment.actualendpoints)
         settimestamps(requiredSegment.timestamps)
-        setendpoints(requiredSegment.endpoints)
+        setendpoints({start:requiredSegment.endpoints.start,end:requiredSegment.endpoints.end})
         playAudio()
     }
 
@@ -297,7 +301,7 @@ const AudioEditor = () => {
                         </OverlayTrigger>
                     <div className="m-2">100000</div>
                 </div>
-                <ul className='list-group'>
+                <ul className='list-group' id='seglist'>
                     <li className="list-group-item active" aria-current="true">Audio Segments</li>
                     {
                         seglist.length<1?<div>No segments to show yet</div>:seglist.map((segment,index)=>{
@@ -323,6 +327,18 @@ const AudioEditor = () => {
                     <img src={WaveIcon} className='m-1' style={{width:"20px"}}/>
                     Generate Report
                 </button>
+                <img 
+                    style={{width:"20px",cursor:"pointer"}} 
+                    ref={target} 
+                    onClick={() => setShow(!show)} 
+                    src={HelpIcon}/>
+                <Overlay target={target.current} show={show} placement="right">
+                    {(props) => (
+                    <Tooltip id="overlay-example" {...props}>
+                        <p className='text-start'>All the segments currently available in the above list will be sent for analysis.</p>
+                    </Tooltip>
+                    )}
+                </Overlay>
             </div>
             
         </div>

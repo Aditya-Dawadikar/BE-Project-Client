@@ -6,6 +6,7 @@ import HelpIcon from '../../assets/icons/help.png'
 
 import ClinicNavigation from '../../components/website_essentials/ClinicNavigation'
 import AudioEditor from './AudioEditor'
+import ReportGeneration from './ReportGeneration'
 
 const Patient = () => {
 
@@ -48,7 +49,7 @@ const Patient = () => {
     return (
         <div>
             <ClinicNavigation/>
-            <Tabs defaultActiveKey="Information" id="uncontrolled-tab-example" className="mb-3">
+            <Tabs defaultActiveKey="Workspace" id="uncontrolled-tab-example" className="mb-3">
                 <Tab eventKey="Information" title="Information">
                     <div className="container">
                         <div className='h4'><img className="m-1" src={PatientIcon} style={{width:"40px"}}/>Patient: {patient.firstname+" "+patient.lastname}</div>
@@ -137,6 +138,8 @@ const Patient = () => {
                 </Tab>
                 <Tab eventKey="Workspace" title="Workspace">
                     <AudioEditor/>
+                    <br/>
+                    <ReportGeneration/>
                 </Tab>
             </Tabs>
         </div>
