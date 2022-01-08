@@ -6,7 +6,6 @@ import PauseIcon from '../../assets/icons/pause.png'
 import CropIcon from '../../assets/icons/crop.png'
 import TrashIcon from '../../assets/icons/delete.png'
 import WaveIcon from '../../assets/icons/wave.png'
-import { parse } from 'dotenv'
 
 const AudioEditor = () => {
 
@@ -178,7 +177,7 @@ const AudioEditor = () => {
 
     const trimAudio=()=>{
         let newSegment = {
-            endpoints:{start:parse(endpoints.start),end:parseInt(endpoints.end)},
+            endpoints:{start:parseInt(endpoints.start),end:parseInt(endpoints.end)},
             actualendpoints:{start:parseInt(actualendpoints.start),end:parseInt(actualendpoints.end)},
             timestamps:{start:parseInt(timestamps.start),end:parseInt(timestamps.end)},
             data:signaldata.slice(Math.floor(timestamps.start*samplingrate),Math.floor(timestamps.end*samplingrate)+1),
