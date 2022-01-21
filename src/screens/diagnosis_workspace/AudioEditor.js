@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef} from 'react'
+import React,{useState,useEffect,useRef,useContext} from 'react'
 import { Overlay,OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 import PlayIcon from '../../assets/icons/play.png'
@@ -7,6 +7,9 @@ import CropIcon from '../../assets/icons/crop.png'
 import TrashIcon from '../../assets/icons/delete.png'
 import WaveIcon from '../../assets/icons/wave.png'
 import HelpIcon from '../../assets/icons/helpblack.png'
+
+
+import ReportGeneration from './ReportGeneration'
 
 const AudioEditor = () => {
 
@@ -23,10 +26,40 @@ const AudioEditor = () => {
     const [audio,setAudio] = useState(new Audio(audiofile))
     const [instance,setinstance] = useState(0)
     const [timestamps,settimestamps] = useState({start:0,end:0})
-    const [seglist,setSeglist] = useState([])
+    const [seglist,setSeglist] = useState([
+        // {
+        //             endpoints:{start:43,end:864},
+        //             actualendpoints:{start:43,end:136},
+        //             timestamps:{start:0,end:2},
+        //             data:[],
+        //             name: "segment 1",
+        //             abnormality:"Crackle",
+        //             diagnosis:"COPD",
+        //             severity:"moderate manifestation"
+        //         },{
+        //             endpoints:{start:264,end:671},
+        //             actualendpoints:{start:264,end:329},
+        //             timestamps:{start:5,end:6},
+        //             data:[],
+        //             name: "segment 2",
+        //             abnormality:"Crackle",
+        //             diagnosis:"COPD",
+        //             severity:"moderate manifestation"
+        //         },{
+        //             endpoints:{start:484,end:465},
+        //             actualendpoints:{start:484,end:535},
+        //             timestamps:{start:9,end:10},
+        //             data:[],
+        //             name: "segment 3",
+        //             abnormality:"Crackle",
+        //             diagnosis:"COPD",
+        //             severity:"moderate manifestation"
+        //         }
+    ])
 
     const [show, setShow] = useState(false);
     const target = useRef(null);
+    const [showreport,setshowreport] = useState(false);
 
     // handler for visualization
     var openFile = function(event) {
@@ -64,6 +97,7 @@ const AudioEditor = () => {
         setactualendpoints({start:endpoints.start,end:canvasWidth-endpoints.end})
     },[endpoints])
 
+    //updating canvas
     useEffect(() => {
         function blur(){
             const canvas = canvasRef.current
@@ -185,13 +219,27 @@ const AudioEditor = () => {
             actualendpoints:{start:parseInt(actualendpoints.start),end:parseInt(actualendpoints.end)},
             timestamps:{start:parseInt(timestamps.start),end:parseInt(timestamps.end)},
             data:signaldata.slice(Math.floor(timestamps.start*samplingrate),Math.floor(timestamps.end*samplingrate)+1),
-            name: "segment "+String(seglist.length+1)
+            name: "segment "+String(seglist.length+1),
+            samplingrate:samplingrate,
+            analysis:{
+                abnormality:{
+                    crackles: 0,
+                    normal: 0,
+                    wheezes: 0,
+                },
+                disorder:{
+                    asthma: 0,
+                    bronchial_disorders: 0,
+                    copd: 0,
+                    healthy: 0,
+                    pneumonia: 0,
+                },
+                severity:0
+            },
+            isAnalysed:false
         }
-        
-        let newSegmentList =seglist
-        newSegmentList.push(newSegment)
-        console.log(newSegmentList)
-        setSeglist(newSegmentList)
+
+        setSeglist((seglist)=>[...seglist,newSegment])
     }
 
     const deleteSegment=(index)=>{
@@ -210,138 +258,150 @@ const AudioEditor = () => {
     }
 
     return (
-        <div className='d-flex'>
-            <div className='m-2' style={{width:canvasWidth+"px"}}>
-                <div className='d-flex'>
-                    <input type='file' onChange={(e)=>openFile(e)}></input>
-                </div>
-                <br/>
-                <div>
-                    {/* visualizer */}
-                    <input 
-                        type='range'
-                        id="range-1"
-                        min={0} 
-                        max={canvasWidth}
-                        style={{width:canvasWidth+"px"}}
-                        className="cutter-slider" 
-                        value={endpoints.start} 
-                        onChange={(e)=>{
-                            if(e.target.value<(canvasWidth-endpoints.end)){
-                                setendpoints({start:e.target.value,end:endpoints.end})
-                            }else{
-                                setendpoints({start:canvasWidth-endpoints.end,end:endpoints.end})
-                            }
-                        }}
-                    ></input>
-                    <input 
-                        type='range'
-                        id="range-2"
-                        min={0} 
-                        max={canvasWidth}
-                        style={{width:canvasWidth+"px"}}
-                        className="cutter-slider" 
-                        value={endpoints.end} 
-                        onChange={(e)=>{
-                            if(e.target.value<(canvasWidth-endpoints.start)){
-                                setendpoints({start:endpoints.start,end:e.target.value})
-                            }else{
-                                setendpoints({start:endpoints.start,end:canvasWidth-endpoints.start})
-                            }
-                        }}
-                    ></input>
-                </div>
-                <canvas 
-                    style={{border:"solid 1px black"}}
-                    ref={canvasRef}
-                    width={canvasWidth+"px"}
-                    height={"200px"}>
-                </canvas>
-                <div>
-                    {/* player */}
-                    <input
-                        className="audio-progress"
-                        style={{width:canvasWidth+"px"}}
-                        type='range'
-                        min={0}
-                        max={canvasWidth}
-                        value={instance}
-                    />
-                    <div className='d-flex justify-content-center align-items-center'>
-                        00:00/00:00
+        <div>
+            <div className='d-flex'>
+                <div className='m-2' style={{width:canvasWidth+"px"}}>
+                    <div className='d-flex'>
+                        <input type='file' onChange={(e)=>openFile(e)}></input>
                     </div>
-                    <div className='d-flex justify-content-center align-items-center'>
-                        <button className='btn btn-primary mx-2' onClick={pauseAudio}><img src={PauseIcon} className='m-1' style={{width:"20px"}}/>Pause</button>
-                        <button className='btn btn-primary mx-2' onClick={playAudio}><img src={PlayIcon} className='m-1' style={{width:"20px"}}/>Play</button>
-                        <button className='btn btn-primary mx-2' onClick={()=>{trimAudio()}}><img src={CropIcon} className='m-1' style={{width:"20px"}}/>Trim</button>
-                    </div>
-                </div>
-            </div>
-            <div className='m-2'>
-                {/* we will add all the controls here */}
-                Scale signal for Better visualization
-                <div className="d-flex">
-                    <div className="m-2">100</div>
-                        <OverlayTrigger
-                            placement={'top'}
-                            overlay={
-                                <Tooltip>
-                                    <strong>Scaled to {scalingfactor}</strong>
-                                </Tooltip>
-                        }>    
+                    <br/>
+                    <div>
+                        {/* visualizer */}
                         <input 
-                            type='range' 
-                            min={100} 
-                            max={100000}
+                            type='range'
+                            id="range-1"
+                            min={0} 
+                            max={canvasWidth}
+                            style={{width:canvasWidth+"px"}}
+                            className="cutter-slider" 
+                            value={endpoints.start} 
                             onChange={(e)=>{
-                                setscalingfactor(e.target.value)
+                                if(e.target.value<(canvasWidth-endpoints.end)){
+                                    setendpoints({start:e.target.value,end:endpoints.end})
+                                }else{
+                                    setendpoints({start:canvasWidth-endpoints.end,end:endpoints.end})
+                                }
                             }}
                         ></input>
-                                
-                        </OverlayTrigger>
-                    <div className="m-2">100000</div>
+                        <input 
+                            type='range'
+                            id="range-2"
+                            min={0} 
+                            max={canvasWidth}
+                            style={{width:canvasWidth+"px"}}
+                            className="cutter-slider" 
+                            value={endpoints.end} 
+                            onChange={(e)=>{
+                                if(e.target.value<(canvasWidth-endpoints.start)){
+                                    setendpoints({start:endpoints.start,end:e.target.value})
+                                }else{
+                                    setendpoints({start:endpoints.start,end:canvasWidth-endpoints.start})
+                                }
+                            }}
+                        ></input>
+                    </div>
+                    <canvas 
+                        style={{border:"solid 1px black"}}
+                        ref={canvasRef}
+                        width={canvasWidth+"px"}
+                        height={"200px"}>
+                    </canvas>
+                    <div>
+                        {/* player */}
+                        <input
+                            className="audio-progress"
+                            style={{width:canvasWidth+"px"}}
+                            type='range'
+                            min={0}
+                            max={canvasWidth}
+                            value={instance}
+                        />
+                        <div className='d-flex justify-content-center align-items-center'>
+                            00:00/00:00
+                        </div>
+                        <div className='d-flex justify-content-center align-items-center'>
+                            <button className='btn btn-primary mx-2' onClick={pauseAudio}><img src={PauseIcon} className='m-1' style={{width:"20px"}}/>Pause</button>
+                            <button className='btn btn-primary mx-2' onClick={playAudio}><img src={PlayIcon} className='m-1' style={{width:"20px"}}/>Play</button>
+                            <button className='btn btn-primary mx-2' onClick={()=>{trimAudio()}}><img src={CropIcon} className='m-1' style={{width:"20px"}}/>Trim</button>
+                        </div>
+                    </div>
                 </div>
-                <ul className='list-group' id='seglist'>
-                    <li className="list-group-item active" aria-current="true">Audio Segments</li>
-                    {
-                        seglist.length<1?<div>No segments to show yet</div>:seglist.map((segment,index)=>{
-                            return <li key={index} className="list-group-item"> {segment.name}
-                                <button 
-                                    className='btn btn-primary mx-2' 
-                                    onClick={()=>{playFromList(index)}}>
-                                    <img src={PlayIcon} className='m-1' style={{width:"20px"}}/>
-                                </button>
-                                <button 
-                                    className='btn btn-danger mx-2' 
-                                    onClick={()=>{deleteSegment(index)}}>
-                                    <img src={TrashIcon} className='m-1' style={{width:"20px"}}/>
-                                </button>
-                            </li>
-                        })
-                    }
-                </ul>
-                <br/>
-                <button 
-                    className='btn btn-success mx-2' 
-                    onClick={()=>{}}>
-                    <img src={WaveIcon} className='m-1' style={{width:"20px"}}/>
-                    Generate Report
-                </button>
-                <img 
-                    style={{width:"20px",cursor:"pointer"}} 
-                    ref={target} 
-                    onClick={() => setShow(!show)} 
-                    src={HelpIcon}/>
-                <Overlay target={target.current} show={show} placement="right">
-                    {(props) => (
-                    <Tooltip id="overlay-example" {...props}>
-                        <p className='text-start'>All the segments currently available in the above list will be sent for analysis.</p>
-                    </Tooltip>
-                    )}
-                </Overlay>
+                <div className='m-2'>
+                    {/* we will add all the controls here */}
+                    Scale signal for Better visualization
+                    <div className="d-flex">
+                        <div className="m-2">100</div>
+                            <OverlayTrigger
+                                placement={'top'}
+                                overlay={
+                                    <Tooltip>
+                                        <strong>Scaled to {scalingfactor}</strong>
+                                    </Tooltip>
+                            }>    
+                            <input 
+                                type='range' 
+                                min={100} 
+                                max={100000}
+                                onChange={(e)=>{
+                                    setscalingfactor(e.target.value)
+                                }}
+                            ></input>
+                                    
+                            </OverlayTrigger>
+                        <div className="m-2">100000</div>
+                    </div>
+                    <ul className='list-group' id='seglist'>
+                        <li className="list-group-item active" aria-current="true">Audio Segments</li>
+                        {
+                            seglist.length<1?<div>No segments to show yet</div>:seglist.map((segment,index)=>{
+                                return <li key={index} className="list-group-item"> {segment.name}
+                                    <button 
+                                        className='btn btn-primary mx-2' 
+                                        onClick={()=>{playFromList(index)}}>
+                                        <img src={PlayIcon} className='m-1' style={{width:"20px"}}/>
+                                    </button>
+                                    <button 
+                                        className='btn btn-danger mx-2' 
+                                        onClick={()=>{deleteSegment(index)}}>
+                                        <img src={TrashIcon} className='m-1' style={{width:"20px"}}/>
+                                    </button>
+                                </li>
+                            })
+                        }
+                    </ul>
+                    <br/>
+                    <button 
+                        className={
+                            seglist.length>0?'btn btn-success mx-2':'btn btn-secondary'
+                        }
+                        onClick={()=>{
+                                if(seglist.length>0){
+                                    setshowreport(!showreport)
+                                }
+                            }}>
+                        <img src={WaveIcon} className='m-1' style={{width:"20px"}}/>
+                        Show Report
+                    </button>
+                    <img 
+                        style={{width:"20px",cursor:"pointer"}} 
+                        ref={target} 
+                        onClick={() => setShow(!show)} 
+                        src={HelpIcon}/>
+                    <Overlay target={target.current} show={show} placement="right">
+                        {(props) => (
+                        <Tooltip id="overlay-example" {...props}>
+                            <p className='text-start'>All the segments currently available in the above list will be sent for analysis.</p>
+                        </Tooltip>
+                        )}
+                    </Overlay>
+                </div>
+                
             </div>
-            
+            {
+                showreport===true?<ReportGeneration segments={seglist}/>:<></>
+            }
         </div>
+        
     )
 }
 

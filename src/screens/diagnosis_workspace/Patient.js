@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef} from 'react'
+import React,{useState,useEffect,useRef, createContext} from 'react'
 import {Tabs,Tab,Tooltip, Overlay} from 'react-bootstrap'
 
 import PatientIcon from '../../assets/icons/patient.png'
@@ -6,7 +6,7 @@ import HelpIcon from '../../assets/icons/help.png'
 
 import ClinicNavigation from '../../components/website_essentials/ClinicNavigation'
 import AudioEditor from './AudioEditor'
-import ReportGeneration from './ReportGeneration'
+import axios from 'axios'
 
 const Patient = () => {
 
@@ -137,9 +137,20 @@ const Patient = () => {
                     </div>
                 </Tab>
                 <Tab eventKey="Workspace" title="Workspace">
+                    <div 
+                        className='btn btn-primary'
+                        onClick={()=>{
+                            axios.post('http://localhost:5000/api/test',{
+                                key:"1234"
+                            })
+                            .then((res)=>{
+                                console.log(res)
+                            }).catch((err)=>{
+                                console.log(err)
+                            })
+                        }}
+                        >Test CORS</div>
                     <AudioEditor/>
-                    <br/>
-                    <ReportGeneration/>
                 </Tab>
             </Tabs>
         </div>
