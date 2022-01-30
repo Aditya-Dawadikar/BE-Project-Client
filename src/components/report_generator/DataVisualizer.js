@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Tabs, Tab } from 'react-bootstrap'
+import BarGraph from './BarGraph';
+import LineGraph from './LineGraph';
 
 import Img1 from '../../assets/graphs/img1.png'
 import Img2 from '../../assets/graphs/img2.png'
@@ -42,37 +44,7 @@ const DataVisualizer = ({ seginfo }) => {
                 console.log(err)
             })
         }
-        function getAbnormality() {
-            // console.log(seginfo.analysis)
-            axios.post('http://localhost:5000/api/visualization/probability', {
-                classes: Object.keys(seginfo.analysis.abnormality),
-                probabilities: Object.values(seginfo.analysis.abnormality)
-            }, {
-                responseType: 'blob'
-            }).then((res) => {
-                let imagesrc = URL.createObjectURL(res.data);
-                setimg1(imagesrc)
-            }).catch((err) => {
-                console.log(err)
-            })
-        }
-        function getDisorder() {
-            // console.log(seginfo.analysis)
-            axios.post('http://localhost:5000/api/visualization/probability', {
-                classes: Object.keys(seginfo.analysis.disorder),
-                probabilities: Object.values(seginfo.analysis.disorder)
-            }, {
-                responseType: 'blob'
-            }).then((res) => {
-                let imagesrc = URL.createObjectURL(res.data);
-                setimg2(imagesrc)
-            }).catch((err) => {
-                console.log(err)
-            })
-        }
 
-        // getAbnormality()
-        // getDisorder()
         getTimeSeries()
         getSpectrogram()
 
@@ -80,18 +52,20 @@ const DataVisualizer = ({ seginfo }) => {
 
     return <Tabs defaultActiveKey="Abnormality" id="uncontrolled-tab-example" className="mb-3">
         <Tab eventKey="Abnormality" title="Abnormality" style={{ minHeight: "250px" }}>
-            <img src={img1} style={{ height: "275px" }} />
+            <BarGraph labels={Object.keys(seginfo.analysis.abnormality)} data={Object.values(seginfo.analysis.abnormality)} />
         </Tab>
         <Tab eventKey="Diagnosis" title="Diagnosis" style={{ minHeight: "250px" }}>
-            <img src={img2} style={{ height: "275px" }} />
+            <BarGraph labels={Object.keys(seginfo.analysis.disorder)} data={Object.values(seginfo.analysis.disorder)}/>
         </Tab>
         <Tab eventKey="Waveform" title="Waveform" style={{ minHeight: "250px" }}>
-            <img src={img3} style={{ height: "275px" }} />
+            {/* <img src={img3} style={{ height: "275px" }} /> */}
+            <LineGraph data={seginfo.signaldata} />
         </Tab>
         <Tab eventKey="Spectrogram" title="Spectrogram" style={{ minHeight: "250px" }}>
             <img src={img4} style={{ height: "275px" }} />
         </Tab>
     </Tabs>
+
 };
 
 export default DataVisualizer;

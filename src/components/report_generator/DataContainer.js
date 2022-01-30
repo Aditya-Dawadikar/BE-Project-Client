@@ -5,16 +5,16 @@ import DataTable from './DataTable';
 import DataVisualizer from './DataVisualizer';
 
 const DataContainer = ({ segment }) => {
-
-    const [seginfo,setseginfo] = useState({
-        name:"",
-        abnormality:0,
-        diagnosis:0,
-        severity:0,
-        signaldata:[],
-        samplingrate:0,
-        analysis:{}
-    })
+    // {
+    //     name:"",
+    //     abnormality:0,
+    //     diagnosis:0,
+    //     severity:0,
+    //     signaldata:[],
+    //     samplingrate:0,
+    //     analysis:{}
+    // }
+    const [seginfo,setseginfo] = useState(null)
 
     const abnormality = ["crackle", "none", "wheeze"]
     const diagnosis = ["asthma", "bronchial", "copd", "healthy", "pneumonia"]
@@ -73,10 +73,10 @@ const DataContainer = ({ segment }) => {
     return <div className='row'>
         <div className='col'>
             {/* Segment details */}
-            <DataTable seginfo={seginfo} />
+            { seginfo!==null?<DataTable seginfo={seginfo} />:<></>}
         </div>
         <div className='col'>
-            <DataVisualizer seginfo={seginfo}/>
+            { seginfo!==null?<DataVisualizer seginfo={seginfo}/>:<></>}
         </div>
     </div>
 
