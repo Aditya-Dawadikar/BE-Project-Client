@@ -119,7 +119,58 @@ const AdminPanel = () => {
         bloodgroup:0,
         gender:0,
         diagnosis: "abc"
+    },{
+        firstname:"a",
+        lastname:"",
+        phone:"",
+        email:"",
+        age:0,
+        weight:0,
+        bloodgroup:0,
+        gender:0,
+        diagnosis: "abc"
+    },{
+        firstname:"a",
+        lastname:"",
+        phone:"",
+        email:"",
+        age:0,
+        weight:0,
+        bloodgroup:0,
+        gender:0,
+        diagnosis: "abc"
+    },{
+        firstname:"a",
+        lastname:"",
+        phone:"",
+        email:"",
+        age:0,
+        weight:0,
+        bloodgroup:0,
+        gender:0,
+        diagnosis: "abc"
+    },{
+        firstname:"a",
+        lastname:"",
+        phone:"",
+        email:"",
+        age:0,
+        weight:0,
+        bloodgroup:0,
+        gender:0,
+        diagnosis: "abc"
+    },{
+        firstname:"a",
+        lastname:"",
+        phone:"",
+        email:"",
+        age:0,
+        weight:0,
+        bloodgroup:0,
+        gender:0,
+        diagnosis: "abc"
     }])
+    const [temppatientlist,settemppatientlist] = useState([])
     const [clinicianList,setClinicianList] = useState([{
         firstname:"aa",
         lastname:"",
@@ -144,7 +195,32 @@ const AdminPanel = () => {
         age:0,
         role:"sag",
         gender:0
+    },{
+        firstname:"aa",
+        lastname:"",
+        phone:"",
+        email:"",
+        age:0,
+        role:"saf",
+        gender:0
+    },{
+        firstname:"afw",
+        lastname:"",
+        phone:"",
+        email:"",
+        age:0,
+        role:"fwe",
+        gender:0
+    },{
+        firstname:"vsehr",
+        lastname:"",
+        phone:"",
+        email:"",
+        age:0,
+        role:"sag",
+        gender:0
     }])
+    const [tempclinicianlist,settempclinicianlist] = useState([])
 
     const PatientFilterForm=()=>{
 
@@ -478,6 +554,55 @@ const AdminPanel = () => {
         </div>
     }
 
+    // Pagination Logic for Clinician and Patient Tab
+    const [limit,setlimit] = useState(5)
+    const [patientcurrentindex,setpatientcurrentindex] = useState(0)
+    const [patientpage,setpatientpage]=useState(patientcurrentindex)
+
+    const [cliniciancurrentindex,setcliniciancurrentindex] = useState(0)
+    const [clinicianpage,setclinicianpage]=useState(cliniciancurrentindex)
+
+    function incrementPatient(){
+        if((patientcurrentindex+1)*limit<patientList.length){
+            setpatientcurrentindex(patientcurrentindex+1)
+        }
+    }
+    function decrementPatient(){
+        if(patientcurrentindex>=1){
+            setpatientcurrentindex(patientcurrentindex-1)
+        }
+    }    
+    function incrementClinician(){
+        if((cliniciancurrentindex+1)*limit<clinicianList.length){
+            setcliniciancurrentindex(cliniciancurrentindex+1)
+        }
+    }
+    function decrementClinician(){
+        if(cliniciancurrentindex>=1){
+            setcliniciancurrentindex(cliniciancurrentindex-1)
+        }
+    }
+
+    useEffect(()=>{
+        function pagination(){
+            let pageinfo = (patientcurrentindex*limit+1)+"-"+(Math.min(patientcurrentindex*limit+limit,patientList.length))+"/"+patientList.length
+            setpatientpage(pageinfo)
+            settemppatientlist(patientList.slice(patientcurrentindex*limit,patientcurrentindex*limit+limit))
+        }
+
+        pagination()
+    },[patientcurrentindex,patientList])
+
+    useEffect(()=>{
+        function pagination(){
+            let pageinfo = (cliniciancurrentindex*limit+1)+"-"+(Math.min(cliniciancurrentindex*limit+limit,clinicianList.length))+"/"+clinicianList.length
+            setclinicianpage(pageinfo)
+            settempclinicianlist(clinicianList.slice(cliniciancurrentindex*limit,cliniciancurrentindex*limit+limit))
+        }
+
+        pagination()
+    },[cliniciancurrentindex,clinicianList])
+
     return (
         <div>
             <ClinicNavigation/>
@@ -519,7 +644,7 @@ const AdminPanel = () => {
                                 </div>
                             </Collapse>
                             <br/>
-                            <div className='d-flex'>
+                            <div>
                                 <ul className='list-group container-fluid'>
                                     <li className='list-group-item active'>
                                         <div className='row'>
@@ -529,10 +654,16 @@ const AdminPanel = () => {
                                             <div className="col">Action</div>
                                         </div>
                                     </li>
-                                    {patientList.map((patient,index)=>{
+                                    {temppatientlist.map((patient,index)=>{
                                         return <li className='list-group-item' key={index}><PatientHorizontal patient={patient}/></li>
                                     })}
                                 </ul>
+                                <br/>
+                                <div className='d-flex justify-content-center'>
+                                    <div className='btn btn-primary' onClick={()=>{decrementPatient()}}>Prev</div>
+                                    <p className='m-1'>{patientpage}</p>
+                                    <div className='btn btn-primary' onClick={()=>{incrementPatient()}}>Next</div>
+                                </div>
                             </div>
                         </div>
                     </Tab>
@@ -572,7 +703,7 @@ const AdminPanel = () => {
                                 </div>
                             </Collapse>
                             <br/>
-                            <div className='d-flex'>
+                            <div>
                                 <ul className='list-group container-fluid'>
                                     <li className="list-group-item  active">
                                         <div className='row'>
@@ -582,14 +713,21 @@ const AdminPanel = () => {
                                             <div className="col">Action</div>
                                         </div>
                                     </li>
-                                    {clinicianList.map((clinician,index)=>{
+                                    {tempclinicianlist.map((clinician,index)=>{
                                         return <li className='list-group-item' key={index}><ClinicianHorizontal clinician={clinician}/></li>
                                     })}
                                 </ul>
+                                <br/>
+                                <div className='d-flex justify-content-center'>
+                                    <div className='btn btn-primary' onClick={()=>{decrementClinician()}}>Prev</div>
+                                    <p className='m-1'>{clinicianpage}</p>
+                                    <div className='btn btn-primary' onClick={()=>{incrementClinician()}}>Next</div>
+                                </div>
                             </div>
                         </div>
                     </Tab>
                 </Tabs>
+                <div style={{width:"100%",height:"200px"}}></div>
         </div>
     )
 }
