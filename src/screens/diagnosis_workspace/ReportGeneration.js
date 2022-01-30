@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Tabs, Tab, Table, Tooltip, Overlay, Collapse, Button, Form } from 'react-bootstrap'
+import { Tabs,Tab,Table,Form } from 'react-bootstrap'
 
-import DataTable from '../../components/report_generator/DataTable'
-
-import Img1 from '../../assets/graphs/img1.png'
-import Img2 from '../../assets/graphs/img2.png'
-import Img3 from '../../assets/graphs/img3.png'
-import Img4 from '../../assets/graphs/img4.png'
-
-import axios from 'axios'
+import DataContainer from '../../components/report_generator/DataContainer'
 
 const ReportGeneration = ({ segments }) => {
 
@@ -33,10 +26,10 @@ const ReportGeneration = ({ segments }) => {
                     <ul className='list-group'>
                         <li className='list-group-item active'>
                             <div className='row'>
-                                <div className='col-3'>
+                                <div className='col'>
                                     Segment details
                                 </div>
-                                <div className='col-9'>
+                                <div className='col'>
                                     visualization
                                 </div>
                             </div>
@@ -44,36 +37,7 @@ const ReportGeneration = ({ segments }) => {
                         {
                             seglist.map((segment, index) => {
                                 return <li key={index} className='list-group-item'>
-                                    <div className='row'>
-                                        <div className='col-3'>
-                                            {/* Segment details */}
-                                            <DataTable segment={segment}/>
-                                        </div>
-                                        <div className='col-9'>
-                                            <Tabs defaultActiveKey="Analysis" id="uncontrolled-tab-example" className="mb-3">
-                                                <Tab eventKey="Analysis" title="Analysis" style={{ minHeight: "250px" }}>
-                                                    <div className='row'>
-                                                        <div className='col-6'>
-                                                            <img src={Img2} style={{ width: "400px" }} />
-                                                        </div>
-                                                        <div className='col-6'>
-                                                            <img src={Img1} style={{ width: "400px" }} />
-                                                        </div>
-                                                    </div>
-                                                </Tab>
-                                                <Tab eventKey="Waveform" title="Waveform" style={{ minHeight: "250px" }}>
-                                                    <div className='row'>
-                                                        <div className='col-6'>
-                                                            <img src={Img3} style={{ width: "400px" }} />
-                                                        </div>
-                                                        <div className='col-6'>
-                                                            <img src={Img4} style={{ width: "400px" }} />
-                                                        </div>
-                                                    </div>
-                                                </Tab>
-                                            </Tabs>
-                                        </div>
-                                    </div>
+                                    <DataContainer segment={segment}/>
                                 </li>
                             })
                         }
