@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef, createContext} from 'react'
+import React,{useState,useRef} from 'react'
 import {Tabs,Tab,Tooltip, Overlay} from 'react-bootstrap'
 
 import PatientIcon from '../../assets/icons/patient.png'
@@ -49,7 +49,7 @@ const Patient = () => {
     return (
         <div>
             <ClinicNavigation/>
-            <Tabs defaultActiveKey="Workspace" id="uncontrolled-tab-example" className="mb-3">
+            <Tabs defaultActiveKey="Information" id="uncontrolled-tab-example" className="mb-3">
                 <Tab eventKey="Information" title="Information">
                     <div className="container">
                         <div className='h4'><img className="m-1" src={PatientIcon} style={{width:"40px"}}/>Patient: {patient.firstname+" "+patient.lastname}</div>

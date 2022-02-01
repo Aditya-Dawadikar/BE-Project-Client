@@ -26,36 +26,7 @@ const AudioEditor = () => {
     const [audio,setAudio] = useState(new Audio(audiofile))
     const [instance,setinstance] = useState(0)
     const [timestamps,settimestamps] = useState({start:0,end:0})
-    const [seglist,setSeglist] = useState([
-        // {
-        //             endpoints:{start:43,end:864},
-        //             actualendpoints:{start:43,end:136},
-        //             timestamps:{start:0,end:2},
-        //             data:[],
-        //             name: "segment 1",
-        //             abnormality:"Crackle",
-        //             diagnosis:"COPD",
-        //             severity:"moderate manifestation"
-        //         },{
-        //             endpoints:{start:264,end:671},
-        //             actualendpoints:{start:264,end:329},
-        //             timestamps:{start:5,end:6},
-        //             data:[],
-        //             name: "segment 2",
-        //             abnormality:"Crackle",
-        //             diagnosis:"COPD",
-        //             severity:"moderate manifestation"
-        //         },{
-        //             endpoints:{start:484,end:465},
-        //             actualendpoints:{start:484,end:535},
-        //             timestamps:{start:9,end:10},
-        //             data:[],
-        //             name: "segment 3",
-        //             abnormality:"Crackle",
-        //             diagnosis:"COPD",
-        //             severity:"moderate manifestation"
-        //         }
-    ])
+    const [seglist,setSeglist] = useState([])
 
     const [show, setShow] = useState(false);
     const target = useRef(null);
@@ -400,6 +371,7 @@ const AudioEditor = () => {
             {
                 showreport===true?<ReportGeneration segments={seglist}/>:<></>
             }
+            {/* <ReportGeneration segments={seglist}/> */}
         </div>
         
     )

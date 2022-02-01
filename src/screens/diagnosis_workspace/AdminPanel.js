@@ -46,26 +46,6 @@ const AdminPanel = () => {
         role:0, 
     });
 
-    const [newPatient,setNewPatient] = useState({
-        firstname:"",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        weight:0,
-        bloodgroup:0,
-        gender:0
-    })
-    const [newClinician,setNewClinician] = useState({
-        firstname:"",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        role:"",
-        gender:0
-    })
-
     const [patientGender,setPatientGender] = useState(patientFilterData.gender)
     const [patientDiagnosis,setPatientDiagnosis] = useState(patientFilterData.diagnosis)
     const [clinicianGender,setClinicianGender] = useState(clinicianFilterData.gender)
@@ -99,76 +79,6 @@ const AdminPanel = () => {
         bloodgroup:0,
         gender:0,
         diagnosis: "abc"
-    },{
-        firstname:"a",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        weight:0,
-        bloodgroup:0,
-        gender:0,
-        diagnosis: "abc"
-    },{
-        firstname:"a",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        weight:0,
-        bloodgroup:0,
-        gender:0,
-        diagnosis: "abc"
-    },{
-        firstname:"a",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        weight:0,
-        bloodgroup:0,
-        gender:0,
-        diagnosis: "abc"
-    },{
-        firstname:"a",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        weight:0,
-        bloodgroup:0,
-        gender:0,
-        diagnosis: "abc"
-    },{
-        firstname:"a",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        weight:0,
-        bloodgroup:0,
-        gender:0,
-        diagnosis: "abc"
-    },{
-        firstname:"a",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        weight:0,
-        bloodgroup:0,
-        gender:0,
-        diagnosis: "abc"
-    },{
-        firstname:"a",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        weight:0,
-        bloodgroup:0,
-        gender:0,
-        diagnosis: "abc"
     }])
     const [temppatientlist,settemppatientlist] = useState([])
     const [clinicianList,setClinicianList] = useState([{
@@ -179,63 +89,13 @@ const AdminPanel = () => {
         age:0,
         role:"saf",
         gender:0
-    },{
-        firstname:"afw",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        role:"fwe",
-        gender:0
-    },{
-        firstname:"vsehr",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        role:"sag",
-        gender:0
-    },{
-        firstname:"aa",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        role:"saf",
-        gender:0
-    },{
-        firstname:"afw",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        role:"fwe",
-        gender:0
-    },{
-        firstname:"vsehr",
-        lastname:"",
-        phone:"",
-        email:"",
-        age:0,
-        role:"sag",
-        gender:0
     }])
     const [tempclinicianlist,settempclinicianlist] = useState([])
 
     const PatientFilterForm=()=>{
 
-        const setMinAge=(minage)=>{
-            setPatientFilterData({...patientFilterData,min_age:minage})
-        }
-        const setMaxAge=(maxage)=>{
-            setPatientFilterData({...patientFilterData,max_age:maxage})
-        }
-        const setGender=(id)=>{
-            console.log(gender[id])
-            setPatientFilterData({...patientFilterData,gender:id})
-        }
-        const setDiagnosis=(id)=>{
-            setPatientFilterData({...patientFilterData,diagnosis:id})
+        function handlePatientFilterChange(e){
+            setPatientFilterData({...patientFilterData,[e.target.name]:e.target.value})
         }
 
         return <div className='m-2'>
@@ -248,8 +108,9 @@ const AdminPanel = () => {
                                 min="0" 
                                 max="100" 
                                 className='m-1'
+                                name="min_age"
                                 value={patientFilterData.min_age}
-                                onChange={(e)=>{setMinAge(e.target.value)}}
+                                onChange={(e)=>{handlePatientFilterChange(e)}}
                                 ></input>
                             <div className='btn bg-light'>{patientFilterData.min_age}</div>
                         </div>
@@ -260,8 +121,9 @@ const AdminPanel = () => {
                                 min="0" 
                                 max="100" 
                                 className='m-1'
+                                name="max_age"
                                 value={patientFilterData.max_age}
-                                onChange={(e)=>{setMaxAge(e.target.value)}}
+                                onChange={(e)=>{handlePatientFilterChange(e)}}
                                 ></input>
                             <div className='btn bg-light'>{patientFilterData.max_age}</div>
                         </div>
@@ -269,9 +131,10 @@ const AdminPanel = () => {
                     <div className='col'>
                         <label className="form-label">Gender</label>
                         <Form.Select aria-label="Default select example" 
-                            value = {patientGender}
+                            name="gender"
+                            value={patientFilterData.gender}
                             onChange={(e)=>{
-                                setGender(e.target.value)
+                                handlePatientFilterChange(e)
                             }}>
                             {
                                 gender.map((sex,index)=>{
@@ -283,8 +146,9 @@ const AdminPanel = () => {
                     <div className='col'>
                         <label className="form-label">Diagnosis</label>
                         <Form.Select aria-label="Default select example"
-                            value = {patientDiagnosis}
-                            onChange={(e)=>{setDiagnosis(e.target.value)}}>
+                            name="diagnosis"
+                            value={patientFilterData.diagnosis}
+                            onChange={(e)=>{handlePatientFilterChange(e)}}>
                         {
                             diagnosis.map((disease,index)=>{
                                 return <option key={index} value={index} >{disease}</option>
@@ -299,18 +163,8 @@ const AdminPanel = () => {
 
     const ClinicianFilterForm=()=>{
 
-        const setMinAge=(minage)=>{
-            setClinicianFilterData({...clinicianFilterData,min_age:minage})
-        }
-        const setMaxAge=(maxage)=>{
-            setClinicianFilterData({...clinicianFilterData,max_age:maxage})
-        }
-        const setGender=(id)=>{
-            console.log(gender[id])
-            setClinicianFilterData({...clinicianFilterData,gender:id})
-        }
-        const setRole=(id)=>{
-            setClinicianFilterData({...clinicianFilterData,role:id})
+        function handleClinicianFilterChange(e){
+            setClinicianFilterData({...clinicianFilterData,[e.target.name]:e.target.value})
         }
 
         return <div className='m-2'>
@@ -323,8 +177,9 @@ const AdminPanel = () => {
                                 min="0" 
                                 max="100" 
                                 className='m-1'
+                                name='min_age'
                                 value={clinicianFilterData.min_age}
-                                onChange={(e)=>{setMinAge(e.target.value)}}
+                                onChange={(e)=>{handleClinicianFilterChange(e)}}
                                 ></input>
                             <div className='btn bg-light'>{clinicianFilterData.min_age}</div>
                         </div>
@@ -335,8 +190,9 @@ const AdminPanel = () => {
                                 min="0" 
                                 max="100" 
                                 className='m-1'
+                                name="max_age"
                                 value={clinicianFilterData.max_age}
-                                onChange={(e)=>{setMaxAge(e.target.value)}}
+                                onChange={(e)=>{handleClinicianFilterChange(e)}}
                                 ></input>
                             <div className='btn bg-light'>{clinicianFilterData.max_age}</div>
                         </div>
@@ -344,8 +200,9 @@ const AdminPanel = () => {
                     <div className='col'>
                         <label className="form-label">Gender</label>
                         <Form.Select aria-label="Default select example" 
-                            value = {clinicianGender}
-                            onChange={(e)=>{setGender(e.target.value)}}>
+                            name='gender'
+                            value={clinicianFilterData.gender}
+                            onChange={(e)=>{handleClinicianFilterChange(e)}}>
                             {
                                 gender.map((sex,index)=>{
                                     return <option key={index} value={index} >{sex}</option>
@@ -356,8 +213,9 @@ const AdminPanel = () => {
                     <div className='col'>
                         <label className="form-label">Role</label>
                         <Form.Select aria-label="Default select example"
-                            value = {clinicianRole}
-                            onChange={(e)=>{setRole(e.target.value)}}>
+                            name='role'
+                            value={clinicianFilterData.role}
+                            onChange={(e)=>{handleClinicianFilterChange(e)}}>
                         {
                             role.map((r,index)=>{
                                 return <option key={index} value={index} >{r}</option>
@@ -372,32 +230,15 @@ const AdminPanel = () => {
 
     const AddPatient=()=>{
 
-        const [firstname,setfirstname] = useState("")
-        const [lastname,setlastname] = useState("")
-        const [phone,setphone] = useState("")
-        const [email,setemail] = useState("")
-        const [age,setage] = useState(0)
-        const [weight,setweight] = useState(0)
-        const [pgender,setgender] = useState(0)
-        const [pbloodgroup,setbloodgroup] = useState(0)
+        const [patient,setpatient] = useState({})
+
+        const handlePatientFormOnChange=(e)=>{
+            setpatient({...patient,[e.target.name]:e.target.value})
+        }
 
         const addNewPatient=()=>{
-            setNewPatient({
-                firstname:firstname,
-                lastname:lastname,
-                phone:phone,
-                email:email,
-                age:age,
-                weight:weight,
-                gender:pgender,
-                bloodgroup:pbloodgroup
-            })
-
-            let newpatientlist = patientList
-            newpatientlist.push(newPatient)
-            setPatientList(newpatientlist)
-
-            console.log(newPatient)
+            setPatientList((patientList)=>[...patientList,patient])
+            console.log(patient)
         }
 
         return <div>
@@ -405,36 +246,36 @@ const AdminPanel = () => {
             <div className="row">
                 <div className='col'>
                         <label className="form-label">First Name</label>
-                        <input type='text' placeholder='John' className="form-control col" onChange={(e)=>{setfirstname(e.target.value)}}></input>  
+                        <input type='text' placeholder='John' className="form-control col" value={patient.firstname} name="firstname" onChange={(e)=>{handlePatientFormOnChange(e)}}></input>  
                     </div>
                     <div className='col'>
                         <label className="form-label">Last Name</label>
-                        <input type='text' placeholder='Doe' className="form-control col" onChange={(e)=>{setlastname(e.target.value)}}></input>  
+                        <input type='text' placeholder='Doe' className="form-control col" value={patient.lastname} name="lastname" onChange={(e)=>{handlePatientFormOnChange(e)}}></input>  
                     </div> 
                 </div>
             <br/>
             <div className="row">
                 <div className='col'>
                     <label className="form-label">Phone</label>
-                    <input type='text' placeholder='9850xxxxxx' className="form-control col" onChange={(e)=>{setphone(e.target.value)}}></input>  
+                    <input type='text' placeholder='9850xxxxxx' className="form-control col"  value={patient.phone} name="phone" onChange={(e)=>{handlePatientFormOnChange(e)}}></input>  
                 </div>
                 <div className='col'>
                     <label className="form-label">Email</label>
-                    <input type='email' placeholder='johndoe@gmail.com' className="form-control col" onChange={(e)=>{setemail(e.target.value)}}></input>  
+                    <input type='email' placeholder='johndoe@gmail.com' className="form-control col" value={patient.email} name="email" onChange={(e)=>{handlePatientFormOnChange(e)}}></input>  
                 </div>
             </div>
             <br/>
             <div className="row">
                 <div className='col'>
                     <label className="form-label">Age</label>
-                    <input type='number' placeholder='Age' className="form-control col"  onChange={(e)=>{setage(e.target.value)}}></input>  
+                    <input type='number' placeholder='Age' className="form-control col" value={patient.age} name="age" onChange={(e)=>{handlePatientFormOnChange(e)}}></input>  
                 </div>
 
                 <div className='col'>
                     <label className="form-label">Gender</label>
                     <Form.Select aria-label="Default select example" 
-                            value = {pgender}
-                            onChange={(e)=>{setgender(e.target.value)}}>
+                            value={patient.gender} name="gender"
+                            onChange={(e)=>{handlePatientFormOnChange(e)}}>
                             {
                                 gender.map((sex,index)=>{
                                     return <option key={index} value={index} >{sex}</option>
@@ -446,8 +287,8 @@ const AdminPanel = () => {
                 <div className='col'>
                     <label className="form-label">Blood Group</label>
                     <Form.Select aria-label="Default select example" 
-                            value = {pbloodgroup}
-                            onChange={(e)=>{setbloodgroup(e.target.value)}}>
+                            value={patient.bloodgroup} name="bloodgroup"
+                            onChange={(e)=>{handlePatientFormOnChange(e)}}>
                             {
                                 bloodgroup.map((group,index)=>{
                                     return <option key={index} value={index} >{group}</option>
@@ -458,7 +299,7 @@ const AdminPanel = () => {
                 
                 <div className='col'>
                     <label className="form-label">Weight</label>
-                    <input type='number' placeholder='Weight' className="form-control col" onChange={(e)=>{setweight(e.target.value)}}></input>  
+                    <input type='number' placeholder='Weight' className="form-control col" value={patient.weight} name="weight" onChange={(e)=>{handlePatientFormOnChange(e)}}></input>  
                 </div>
             </div>
             <br/>
@@ -467,30 +308,15 @@ const AdminPanel = () => {
     }
 
     const AddClinician=()=>{
-        const [firstname,setfirstname] = useState("")
-        const [lastname,setlastname] = useState("")
-        const [phone,setphone] = useState("")
-        const [email,setemail] = useState("")
-        const [age,setage] = useState(0)
-        const [prole,setrole] = useState(0)
-        const [pgender,setgender] = useState(0)
+        const [clinician,setclinician] = useState({})
+
+        const handleClinicianFormOnChange=(e)=>{
+            setclinician({...clinician,[e.target.name]:e.target.value})
+        }
 
         const addNewClinician=()=>{
-            setNewClinician({
-                firstname:firstname,
-                lastname:lastname,
-                phone:phone,
-                email:email,
-                age:age,
-                role:prole,
-                gender:pgender,
-            })
-
-            let newclinicianlist = clinicianList
-            newclinicianlist.push(newClinician)
-            setPatientList(newclinicianlist)
-
-            console.log(newClinician)
+            setClinicianList((clinicianList)=>[...clinicianList,clinician])
+            console.log(clinician)
         }
 
         return <div>
@@ -498,36 +324,35 @@ const AdminPanel = () => {
             <div className="row">
                 <div className='col'>
                         <label className="form-label">First Name</label>
-                        <input type='text' placeholder='John' className="form-control col" onChange={(e)=>{setfirstname(e.target.value)}}></input>  
+                        <input type='text' placeholder='John' className="form-control col" value={clinician.firstname} name='firstname' onChange={(e)=>{handleClinicianFormOnChange(e)}}></input>  
                     </div>
                     <div className='col'>
                         <label className="form-label">Last Name</label>
-                        <input type='text' placeholder='Doe' className="form-control col" onChange={(e)=>{setlastname(e.target.value)}}></input>  
+                        <input type='text' placeholder='Doe' className="form-control col" value={clinician.lastname} name='lastname' onChange={(e)=>{handleClinicianFormOnChange(e)}}></input>  
                     </div> 
                 </div>
             <br/>
             <div className="row">
                 <div className='col'>
                     <label className="form-label">Phone</label>
-                    <input type='text' placeholder='9850xxxxxx' className="form-control col" onChange={(e)=>{setphone(e.target.value)}}></input>  
+                    <input type='text' placeholder='9850xxxxxx' className="form-control col" value={clinician.phone} name='phone' onChange={(e)=>{handleClinicianFormOnChange(e)}}></input>  
                 </div>
                 <div className='col'>
                     <label className="form-label">Email</label>
-                    <input type='email' placeholder='johndoe@gmail.com' className="form-control col" onChange={(e)=>{setemail(e.target.value)}}></input>  
+                    <input type='email' placeholder='johndoe@gmail.com' className="form-control col" value={clinician.email} name='email' onChange={(e)=>{handleClinicianFormOnChange(e)}}></input>  
                 </div>
             </div>
             <br/>
             <div className="row">
                 <div className='col'>
                     <label className="form-label">Age</label>
-                    <input type='number' placeholder='Age' className="form-control col"  onChange={(e)=>{setage(e.target.value)}}></input>  
+                    <input type='number' placeholder='Age' className="form-control col" value={clinician.age} name='age' onChange={(e)=>{handleClinicianFormOnChange(e)}}></input>  
                 </div>
 
                 <div className='col'>
                     <label className="form-label">Gender</label>
                     <Form.Select aria-label="Default select example" 
-                            value = {pgender}
-                            onChange={(e)=>{setgender(e.target.value)}}>
+                             value={clinician.gender} name='gender' onChange={(e)=>{handleClinicianFormOnChange(e)}}>
                             {
                                 gender.map((sex,index)=>{
                                     return <option key={index} value={index} >{sex}</option>
@@ -539,8 +364,7 @@ const AdminPanel = () => {
                 <div className='col'>
                     <label className="form-label">Role</label>
                     <Form.Select aria-label="Default select example" 
-                            value = {prole}
-                            onChange={(e)=>{setrole(e.target.value)}}>
+                             value={clinician.role} name='role' onChange={(e)=>{handleClinicianFormOnChange(e)}}>
                             {
                                 role.map((group,index)=>{
                                     return <option key={index} value={index} >{group}</option>
