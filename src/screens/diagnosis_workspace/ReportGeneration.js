@@ -48,7 +48,8 @@ const ReportGeneration = ({ segments }) => {
                     </div>
                 </Tab>
                 <Tab eventKey="AutomatedDiagnosis" title="Automated Diagnosis">
-                    The system suggested diagnosis is as follows:
+                    The system suggested Diagnosis Summary is as follows:
+                    <br/>
                     <Table striped bordered hover>
                         <thead>
                             <tr>
@@ -80,7 +81,7 @@ const ReportGeneration = ({ segments }) => {
                         <br />
                         <textarea id="text-area" rows="4" cols="100" onChange={(e) => { setnote(e.target.value) }}></textarea>
                         <br />
-                        <div className='btn btn-primary'>Report Preview</div>
+                        <div className='btn btn-success'>Save Data</div>   
                     </div>
 
                 </Tab>
@@ -157,7 +158,7 @@ const ReportGeneration = ({ segments }) => {
                             <textarea id="text-area" rows="4" cols="100" onChange={(e) => { setnote(e.target.value) }}></textarea>
                         </div>
                         <br />
-                        <div className='btn btn-primary'>Report Preview</div>
+                        <div className='btn btn-success'>Save Data</div>
                     </div>
                 </Tab>
             </Tabs>

@@ -185,32 +185,34 @@ const AudioEditor = () => {
     }
 
     const trimAudio=()=>{
-        let newSegment = {
-            endpoints:{start:parseInt(endpoints.start),end:parseInt(endpoints.end)},
-            actualendpoints:{start:parseInt(actualendpoints.start),end:parseInt(actualendpoints.end)},
-            timestamps:{start:parseInt(timestamps.start),end:parseInt(timestamps.end)},
-            data:signaldata.slice(Math.floor(timestamps.start*samplingrate),Math.floor(timestamps.end*samplingrate)+1),
-            name: "segment "+String(seglist.length+1),
-            samplingrate:samplingrate,
-            analysis:{
-                abnormality:{
-                    crackles: 0,
-                    normal: 0,
-                    wheezes: 0,
+        if(endpoints.start!== 0 && endpoints.end!==0 && signaldata.length!==0){
+            let newSegment = {
+                endpoints:{start:parseInt(endpoints.start),end:parseInt(endpoints.end)},
+                actualendpoints:{start:parseInt(actualendpoints.start),end:parseInt(actualendpoints.end)},
+                timestamps:{start:parseInt(timestamps.start),end:parseInt(timestamps.end)},
+                data:signaldata.slice(Math.floor(timestamps.start*samplingrate),Math.floor(timestamps.end*samplingrate)+1),
+                name: "segment "+String(seglist.length+1),
+                samplingrate:samplingrate,
+                analysis:{
+                    abnormality:{
+                        crackles: 0,
+                        normal: 0,
+                        wheezes: 0,
+                    },
+                    disorder:{
+                        asthma: 0,
+                        bronchial_disorders: 0,
+                        copd: 0,
+                        healthy: 0,
+                        pneumonia: 0,
+                    },
+                    severity:0
                 },
-                disorder:{
-                    asthma: 0,
-                    bronchial_disorders: 0,
-                    copd: 0,
-                    healthy: 0,
-                    pneumonia: 0,
-                },
-                severity:0
-            },
-            isAnalysed:false
+                isAnalysed:false
+            }
+    
+            setSeglist((seglist)=>[...seglist,newSegment])
         }
-
-        setSeglist((seglist)=>[...seglist,newSegment])
     }
 
     const deleteSegment=(index)=>{
@@ -293,7 +295,7 @@ const AudioEditor = () => {
                         <div className='d-flex justify-content-center align-items-center'>
                             <button className='btn btn-primary mx-2' onClick={pauseAudio}><img src={PauseIcon} className='m-1' style={{width:"20px"}}/>Pause</button>
                             <button className='btn btn-primary mx-2' onClick={playAudio}><img src={PlayIcon} className='m-1' style={{width:"20px"}}/>Play</button>
-                            <button className='btn btn-primary mx-2' onClick={()=>{trimAudio()}}><img src={CropIcon} className='m-1' style={{width:"20px"}}/>Trim</button>
+                            <button className={signaldata.length===0?'btn btn-secondary':'btn btn-primary'} onClick={()=>{trimAudio()}}><img src={CropIcon} className='m-1' style={{width:"20px"}}/>Trim</button>
                         </div>
                     </div>
                 </div>
@@ -351,7 +353,7 @@ const AudioEditor = () => {
                                 }
                             }}>
                         <img src={WaveIcon} className='m-1' style={{width:"20px"}}/>
-                        Show Report
+                        Analyse
                     </button>
                     <img 
                         style={{width:"20px",cursor:"pointer"}} 
@@ -368,6 +370,7 @@ const AudioEditor = () => {
                 </div>
                 
             </div>
+            <br/>
             {
                 showreport===true?<ReportGeneration segments={seglist}/>:<></>
             }

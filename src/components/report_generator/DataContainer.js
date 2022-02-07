@@ -50,6 +50,7 @@ const DataContainer = ({ segment }) => {
                     let results = res.data
                     let seginfoobject = {
                         name: segment.name,
+                        id: results["segment_id"],
                         abnormality: getAbnormality(results['abnormality']),
                         diagnosis: getDiagnosis(results['disorder']),
                         severity:results['severity'],
@@ -57,7 +58,7 @@ const DataContainer = ({ segment }) => {
                         samplingrate:seg.samplingrate,
                         analysis:results
                     }
-                    // console.log(seginfoobject)
+                    console.log(seginfoobject)
                     setseginfo(seginfoobject)
                 }).catch((err) => {
                     console.log(err)
