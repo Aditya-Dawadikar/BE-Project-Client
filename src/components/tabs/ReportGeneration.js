@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Tabs,Tab,Table,Form } from 'react-bootstrap'
 
-import DataContainer from '../../components/report_generator/DataContainer'
+import AudioEditorContext from '../../contexts/AudioEditorContext'
+import DataContainer from '../report_generator/DataContainer'
 
-const ReportGeneration = ({ segments }) => {
+// const ReportGeneration = ({ segments }) => {
+const ReportGeneration = () => {
 
-    const [seglist, setseglist] = useState(segments)
+    const {contextseglist,setcontextseglist} = useContext(AudioEditorContext)
+
+    // const [seglist, setseglist] = useState(segments)
+    const [seglist, setseglist] = useState(contextseglist)
 
     const [note, setnote] = useState()
     const abnormality = ["crackle", "none", "wheeze"]
@@ -15,9 +20,13 @@ const ReportGeneration = ({ segments }) => {
 
     const [activetab, setactivetab] = useState("Analysis")
 
+    // useEffect(() => {
+    //     setseglist(segments)
+    // }, [segments])
+
     useEffect(() => {
-        setseglist(segments)
-    }, [segments])
+        setseglist(contextseglist)
+    }, [contextseglist])
 
     return (
         <div className='container'>
@@ -108,8 +117,8 @@ const ReportGeneration = ({ segments }) => {
                                                         <label className="form-label">Abnormality Detected *</label>
                                                         <Form.Select required>
                                                             {
-                                                                abnormality.map((state, index) => {
-                                                                    return <option key={index} value={index} >{state}</option>
+                                                                abnormality.map((state, indx) => {
+                                                                    return <option key={indx} value={indx} >{state}</option>
                                                                 })
                                                             }
                                                         </Form.Select>
@@ -118,8 +127,8 @@ const ReportGeneration = ({ segments }) => {
                                                         <label className="form-label">Disorder *</label>
                                                         <Form.Select required>
                                                             {
-                                                                diagnosis.map((state, index) => {
-                                                                    return <option key={index} value={index} >{state}</option>
+                                                                diagnosis.map((state, indx) => {
+                                                                    return <option key={indx} value={indx} >{state}</option>
                                                                 })
                                                             }
                                                         </Form.Select>
@@ -128,8 +137,8 @@ const ReportGeneration = ({ segments }) => {
                                                         <label className="form-label">Severity *</label>
                                                         <Form.Select required>
                                                             {
-                                                                severity.map((state, index) => {
-                                                                    return <option key={index} value={index} >{state}</option>
+                                                                severity.map((state, indx) => {
+                                                                    return <option key={indx} value={indx} >{state}</option>
                                                                 })
                                                             }
                                                         </Form.Select>
