@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tabs, Tab, Form } from 'react-bootstrap'
 
 import ClinicNavigation from '../../components/website_essentials/ClinicNavigation'
@@ -64,6 +64,14 @@ const Patient = () => {
         </div>
     }
 
+    const BackToTop=()=>{
+        function scrollToTop(){
+            window.scrollTo(0,0)
+        }
+        return <div className='btn btn-primary back-to-top standard-shadow' onClick={()=>{scrollToTop()}}>Back to Top</div>
+    }
+
+
     return (
         <AudioEditorContext.Provider value={{ contextseglist, setcontextseglist }}>
             <div>
@@ -79,6 +87,7 @@ const Patient = () => {
                     </Tab>
                 </Tabs>
             </div>
+            <BackToTop/>
         </AudioEditorContext.Provider>
     )
 }

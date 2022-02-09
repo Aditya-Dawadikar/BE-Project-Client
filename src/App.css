@@ -72,3 +72,17 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #555;
   }
+
+  .back-to-top{
+      position: fixed;
+      bottom:100px;
+      right:100px;
+      z-index: 10;
+      width: 100px;
+  }
+
+  .standard-shadow{
+    box-shadow: 1px -1px 24px -1px rgb(49, 49, 49);
+    -webkit-box-shadow: 1px -1px 24px -1px rgb(49, 49, 49);
+    -moz-box-shadow: 1px -1px 24px -1px rgb(49, 49, 49);
+  }
