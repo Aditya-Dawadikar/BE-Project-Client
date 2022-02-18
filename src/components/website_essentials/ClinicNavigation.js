@@ -6,6 +6,12 @@ import AccountIcon from '../../assets/icons/account.png'
 import HelpIcon from '../../assets/icons/help.png'
 
 const ClinicNavigation = () => {
+
+    function logoutHandler(){
+        localStorage.clear()
+        window.location.href='http://localhost:3000/clinic'
+    }
+
     return (
         <div>
             <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -20,7 +26,7 @@ const ClinicNavigation = () => {
                     </Nav>
                     <Nav>
                     <div className="text-center" style={{"width":"6em","height":"auto","borderRadius":"20px","background":"white","color":"black"}}> 
-                        <Nav.Link href="/clinic" className="text-primary">
+                        <Nav.Link href="/clinic" className="text-primary" onClick={()=>{logoutHandler()}}>
                             Logout
                         </Nav.Link>
                     </div>

@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
-import { Collapse } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
-
-import FilterButton from '../../assets/icons/filter.png'
-import SearchButton from '../../assets/icons/search.png'
 
 import ClinicianHorizontal from '../cards/Clinician Cards/ClinicianHorizontal'
 import AddClinician from '../forms/AddClinician'
-import FilterClinician from '../forms/FilterClinician'
 
 const ClinicianList = () => {
-  const [open, setOpen] = useState(false);
 
-  const [addClinicianCollapse, setAddClinicianCollapse] = useState(false);
+  const [addClinicianModal, setAddClinicianModal] = useState(false);
 
   const clinicianListFromStore = useSelector((state) => state.allClinicians.allClinicians)
 
@@ -56,39 +51,23 @@ const ClinicianList = () => {
 
   return (
     <div>
-      <div className='btn btn-primary'
-        onClick={() => setAddClinicianCollapse(!addClinicianCollapse)}
-        aria-controls="add-new-clinician"
-        aria-expanded={addClinicianCollapse}
-      >+ Add Clinician</div>
-      <Collapse in={addClinicianCollapse}>
-        <div id='add-new-clinician'>
-          <form>
-            <AddClinician></AddClinician>
-          </form>
+      <div className='row'>
+        <div className='col-lg-9 col-sm-6'>
+          <div className='input-group m-1'>
+            <input type='text' placeholder='find clinicians' className="form-control"></input>
+            <button className='btn btn-primary'>Q</button>
+          </div>
         </div>
-      </Collapse>
-      <br /><br />
-      <div className='d-flex'>
-        <input type='text' placeholder='find clinicians' className="form-control"></input>
-        <button className='btn btn-primary m-1'>
-          <img style={{ width: "20px" }} src={SearchButton}></img>
-        </button>
-        <button className='btn btn-primary m-1'
-          onClick={() => setOpen(!open)}
-          aria-controls="clinician-filter"
-          aria-expanded={open}
-        >
-          <img style={{ width: "20px" }} src={FilterButton}></img>
-        </button>
+        <div className='col-lg-3 col-sm-6'>
+          <Button variant="primary" className='m-1' onClick={() => setAddClinicianModal(true)}>
+            Add Clinician
+          </Button>
+        </div>
       </div>
-      <Collapse in={open}>
-        <div id="clinician-filter">
-          <form>
-            <FilterClinician />
-          </form>
-        </div>
-      </Collapse>
+      <AddClinician
+        show={addClinicianModal}
+        onHide={() => setAddClinicianModal(false)}
+      />
       <br />
       <div>
         {
