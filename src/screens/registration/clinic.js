@@ -1,9 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import {useDispatch,useSelector} from 'react-redux';
 import {Tabs, Tab, Form, Button} from 'react-bootstrap'
-import { login,register } from '../../actions/clinicActions';
+import { login,register } from '../../redux/actions/clinicActions';
 import Navbar from '../../components/website_essentials/Navbar';
-import Footer from '../../components/website_essentials/Footer';
 import Message from '../../components/website_essentials/Message'
 import Loader from '../../components/website_essentials/Loader';
 

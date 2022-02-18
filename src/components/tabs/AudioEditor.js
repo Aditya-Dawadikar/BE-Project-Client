@@ -6,11 +6,17 @@ import PauseIcon from '../../assets/icons/pause.png'
 import CropIcon from '../../assets/icons/crop.png'
 import TrashIcon from '../../assets/icons/delete.png'
 
-import AudioEditorContext from '../../contexts/AudioEditorContext'
+import { useDispatch,useSelector } from 'react-redux'
+import {addSegmentAction,deleteSegmentAction} from '../../redux/actions/audioEditorActions'
 
 const AudioEditor = () => {
+    const dispatch = useDispatch()
+    const segListFromStore = useSelector((state)=>state.allSegments.allSegments)
 
-    const { contextseglist, setcontextseglist } = useContext(AudioEditorContext)
+    useEffect(()=>{
+        console.log(segListFromStore)
+        setSeglist(segListFromStore)
+    },[segListFromStore])
 
     const canvasRef = useRef(null)
     const [canvasWidth, setcanvaswidth] = useState(1000)
@@ -191,6 +197,10 @@ const AudioEditor = () => {
                 name: "segment " + String(seglist.length + 1),
                 samplingrate: samplingrate,
                 analysis: {
+                    summary:{
+                        abnormality:"",
+                        disorder:""
+                    },
                     abnormality: {
                         crackles: 0,
                         normal: 0,
@@ -205,20 +215,23 @@ const AudioEditor = () => {
                     },
                     severity: 0
                 },
+                
                 isAnalysed: false
             }
-
             setSeglist((seglist) => [...seglist, newSegment])
-            setcontextseglist((contextseglist) => [...contextseglist, newSegment])
+
+            // sending new segment to store
+            dispatch(addSegmentAction(newSegment))
         }
     }
 
     const deleteSegment = (index) => {
-        let newSegmentList = seglist
-        newSegmentList.splice(index, 1)
-        console.log(newSegmentList)
-        setSeglist(newSegmentList)
-        setcontextseglist(newSegmentList)
+        setSeglist(seglist.filter((seg,id)=>{
+            return id!=index
+        }))
+
+        // deleting segment from store
+        dispatch(deleteSegmentAction(seglist[index]))
     }
 
     const playFromList = (index) => {

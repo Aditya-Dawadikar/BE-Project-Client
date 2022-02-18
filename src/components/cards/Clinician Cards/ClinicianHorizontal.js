@@ -2,14 +2,20 @@ import React from 'react'
 import ClinicianIcon from '../../../assets/icons/doctor.png'
 import DeleteIcon from '../../../assets/icons/delete.png'
 
+import { useDispatch } from 'react-redux'
+import {deleteClinicianAction} from '../../../redux/actions/clinicianListActions'
+
 const ClinicianHorizontal = (props) => {
+
+    const dispatch = useDispatch()
 
     const visitClinicianProfile=()=>{
         window.location.href = "/clinic/clinician"; 
     }
 
     const deleteClinician=()=>{
-        alert("You are about to delete clinician")
+        // alert("You are about to delete clinician")
+        dispatch(deleteClinicianAction(props.clinician))
     }
 
     return (

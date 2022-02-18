@@ -1,16 +1,21 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Tabs, Tab, Form } from 'react-bootstrap'
+import React, { useState, useEffect} from 'react'
+import { Tabs, Tab} from 'react-bootstrap'
 
-import AudioEditorContext from '../../contexts/AudioEditorContext'
 import AnalysisResult from './AnalysisResult'
 import AutomatedDiagnosis from './AutomatedDiagnosis'
 import ManualDiagnosis from './ManualDiagnosis'
 
+import { useSelector } from 'react-redux'
+
 const ReportGeneration = () => {
 
-    const { contextseglist, setcontextseglist } = useContext(AudioEditorContext)
+    const segListFromStore = useSelector((state)=>state.allSegments.allSegments)
 
-    const [seglist, setseglist] = useState(contextseglist)
+    useEffect(()=>{
+        setseglist(segListFromStore)
+    },[segListFromStore])
+
+    const [seglist, setseglist] = useState([])
     const [summary, setsummary] = useState({
         abnormality: {
             class: "Crackle",
@@ -21,20 +26,25 @@ const ReportGeneration = () => {
         }, severity: 3
     })
 
-    const [note, setnote] = useState()
-
+    const [note, setnote] = useState("")
+    const [symptoms,setsymptoms] = useState("")
 
     const [activetab, setactivetab] = useState("Analysis")
 
-    useEffect(() => {
-        setseglist(contextseglist)
-    }, [contextseglist])
+    function handleNoteChange(e){
+        setnote(e.target.value)
+    }
+    function handleSymptomChange(e){
+        setsymptoms(e.target.value)
+    }
+
+    function handleSubmit(){}
 
     return (
         <div className='container'>
             <Tabs activeKey={activetab} onSelect={(k) => setactivetab(k)} id="report-generator" className="mb-3">
                 <Tab eventKey="Analysis" title="Analysis">
-                    <AnalysisResult seglist={seglist} />
+                    <AnalysisResult />
                     <div className='d-flex'>
                         <div className='btn btn-primary m-1' onClick={() => { setactivetab("AutomatedDiagnosis") }}>Automated Diagnosis</div>
                         <div className='btn btn-primary m-1' onClick={() => { setactivetab("ManualDiagnosis") }}>Manual Diagnosis</div>
@@ -55,16 +65,18 @@ const ReportGeneration = () => {
                         className="form-control"
                         type='text'
                         required={true}
+                        value={symptoms}
+                        onChange={(e)=>{handleSymptomChange(e)}}
                     ></input>
                 </div>
                 <br />
                 <div>
                     <label>Add Note *</label>
                     <br />
-                    <textarea id="text-area" rows="4" cols="100" onChange={(e) => { setnote(e.target.value) }}></textarea>
+                    <textarea id="text-area" className='form-control' value={note} rows="4" cols="100" onChange={(e) => { handleNoteChange(e) }}></textarea>
                 </div>
                 <br />
-                <div className='btn btn-success'>Save Data</div>
+                <div className='btn btn-success' onClick={()=>{handleSubmit()}}>Save Data</div>
             </div>
             <div style={{ height: "500px" }}>
 

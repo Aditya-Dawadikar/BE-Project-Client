@@ -20,12 +20,20 @@ ChartJS.register(
   );
 
 const BarGraph = (props) => {
+
+  const [probabilities,setprobabilities] = useState([])
+  const [labels,setlabels] = useState([])
+  useEffect(()=>{
+    setprobabilities(props.data)
+    setlabels(props.labels)
+  },[props])
+
     const [data, setData] = useState({
-        labels: props.labels,
+        labels: labels,
         datasets: [
             {
                 label: 'Probability',
-                data: props.data,
+                data: probabilities,
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             }
         ]
@@ -44,10 +52,6 @@ const BarGraph = (props) => {
             },
           }
     )
-
-    // useEffect(()=>{
-    //   console.log(props.data,props.labels)
-    // },[props])
 
     return <Bar data={data} options={options} />;
 };

@@ -9,22 +9,63 @@ import ClinicianVertical from '../../components/cards/Clinician Cards/ClinicianV
 
 import WaveIcon from '../../assets/icons/wave.png'
 
-import AudioEditorContext from '../../contexts/AudioEditorContext'
+import { useSelector } from 'react-redux'
 
 const Patient = () => {
 
-    const [contextseglist, setcontextseglist] = useState([])
+    const segListFromStore = useSelector((state)=>state.allSegments.allSegments)
+
+    const [reportinput,setreportinput] = useState({
+        doctor_info:{
+            name:"",
+            qualification:"",
+            clinic_address:"",
+            id:""
+        },patient_info:{
+            name:"",
+            age:"",
+            blood_group:"",
+            contact:"",
+            sex:"",
+            id:""
+        },report_summary:{
+            abnormality:{
+                name:"",
+                probability:0
+            },
+            disorder:{
+                name:"",
+                probability:0
+            },
+            severity:{
+                name:"",
+                probability:0
+            }
+        },report_note:"",
+        symptoms:"",
+        audio_segments:[]
+    })
+    // Schema for audio_segment
+    // {
+    //     "id":"",
+    //     "abnormality":{
+    //         "classes":["crackle","wheeze"],
+    //         "probability":[91,32]
+    //     },
+    //     "disorder":{
+    //         "classes":["pneumoia","asthma","bronchiolitis","healthy","fibrosis"],
+    //         "probability":[67.3,91.87,32.2,0.34,21.3]
+    //     }
+    // }
 
     const [showreport, setshowreport] = useState(false);
 
     const ReportViewControl = () => {
         return <div>
             <button
-                className={contextseglist.length > 0 ? 'btn btn-success mx-2' : 'btn btn-secondary'}
+                className={segListFromStore.length>0?'btn btn-primary':'btn btn-secondary'}
                 onClick={() => {
-                    if (contextseglist.length > 0) {
-                        setshowreport(!showreport)
-                    }
+                    setshowreport(!showreport)
                 }}>
                 <img src={WaveIcon} className='m-1' style={{ width: "20px" }} />
                 Analyse
@@ -71,9 +112,7 @@ const Patient = () => {
         return <div className='btn btn-primary back-to-top standard-shadow' onClick={()=>{scrollToTop()}}>Back to Top</div>
     }
 
-
-    return (
-        <AudioEditorContext.Provider value={{ contextseglist, setcontextseglist }}>
+    return (<div>
             <div>
                 <ClinicNavigation />
                 <Tabs defaultActiveKey="Workspace" id="uncontrolled-tab-example" className="mb-3">
@@ -88,7 +127,7 @@ const Patient = () => {
                 </Tabs>
             </div>
             <BackToTop/>
-        </AudioEditorContext.Provider>
+        </div>
     )
 }
 

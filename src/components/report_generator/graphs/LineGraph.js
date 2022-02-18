@@ -5,11 +5,13 @@ const LineGraph = ({ data }) => {
     const canvasWidth = 500
     const canvasHeight = 200
 
-    const [signaldata, setsignaldata] = useState(data)
+    const [signaldata, setsignaldata] = useState([])
     const [scalingfactor, setscalingfactor] = useState(200)
 
     useEffect(()=>{
-        setsignaldata(data)
+        if(typeof signaldata !== 'undefined'){
+            setsignaldata(data)
+        }
     },[data])
 
     useEffect(() => {
