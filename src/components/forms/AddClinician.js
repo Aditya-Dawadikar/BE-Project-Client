@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Form, Modal, Button } from 'react-bootstrap'
+import {Modal, Button } from 'react-bootstrap'
 
 import { useDispatch } from 'react-redux';
 import { addClinicianAction } from '../../redux/actions/clinicianListActions'
@@ -13,24 +13,52 @@ const AddClinician = (props) => {
         lastname: "",
         email: "",
         phone: "",
-        age: "",
-        weight: "",
-        gender: "",
-        role: ""
+        qualification: ""
     }
     const [clinician, setclinician] = useState(formDefault)
-    const gender = ["none", "male", "female"]
-    const role = ['r1', 'r2', 'r3', 'r4']
 
     const handleClinicianFormOnChange = (e) => {
         setclinician({ ...clinician, [e.target.name]: e.target.value })
     }
 
     const addNewClinician = () => {
-        console.log(clinician)
-        alert("patient saved successfully")
-        setclinician(formDefault)
-        dispatch(addClinicianAction(clinician))
+        if (validateForm()) {
+            console.log(clinician)
+            alert("patient saved successfully")
+            setclinician(formDefault)
+            let clinician_object = clinician
+            clinician_object.name = clinician.firstname + " " + clinician.lastname
+            dispatch(addClinicianAction(clinician))
+        }
+    }
+
+    function validateForm() {
+        const nameRegex = /^[A-Za-z]+$/
+        const emailRegex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+        const phoneRegex = /^[0-9]{10}$/
+
+        if (!nameRegex.test(clinician.firstname) || clinician.firstname === "") {
+            alert("firstname is invalid")
+            return false
+        }
+        else if (!nameRegex.test(clinician.lastname) || clinician.lastname === "") {
+            alert("lastname is invalid")
+            return false
+        }
+        else if (!phoneRegex.test(clinician.phone) || clinician.phone === "") {
+            alert("phone number is invalid")
+            return false
+        }
+        else if (!emailRegex.test(clinician.email) || clinician.email === "") {
+            alert("email is invalid")
+            return false
+        }
+        else if (clinician.qualification === '') {
+            alert("adding qualification is mandatory")
+            return false
+        } else {
+            return true
+        }
     }
 
     return <Modal
@@ -44,62 +72,34 @@ const AddClinician = (props) => {
             </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <form>
-            <br />
-            <div className="row">
-                <div className='col'>
-                    <label className="form-label">First Name</label>
-                    <input type='text' placeholder='John' className="form-control col" value={clinician.firstname} name='firstname' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
+            <form>
+                <br />
+                <div className="row">
+                    <div className='col'>
+                        <label className="form-label">First Name</label>
+                        <input type='text' placeholder='John' className="form-control col" value={clinician.firstname} name='firstname' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
+                    </div>
+                    <div className='col'>
+                        <label className="form-label">Last Name</label>
+                        <input type='text' placeholder='Doe' className="form-control col" value={clinician.lastname} name='lastname' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
+                    </div>
                 </div>
-                <div className='col'>
-                    <label className="form-label">Last Name</label>
-                    <input type='text' placeholder='Doe' className="form-control col" value={clinician.lastname} name='lastname' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
+                <br />
+                <div className="row">
+                    <div className='col'>
+                        <label className="form-label">Phone</label>
+                        <input type='text' placeholder='9850xxxxxx' className="form-control col" value={clinician.phone} name='phone' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
+                    </div>
+                    <div className='col'>
+                        <label className="form-label">Email</label>
+                        <input type='email' placeholder='johndoe@gmail.com' className="form-control col" value={clinician.email} name='email' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
+                    </div>
                 </div>
-            </div>
-            <br />
-            <div className="row">
-                <div className='col'>
-                    <label className="form-label">Phone</label>
-                    <input type='text' placeholder='9850xxxxxx' className="form-control col" value={clinician.phone} name='phone' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
-                </div>
-                <div className='col'>
-                    <label className="form-label">Email</label>
-                    <input type='email' placeholder='johndoe@gmail.com' className="form-control col" value={clinician.email} name='email' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
-                </div>
-            </div>
-            <br />
-            <div className="row">
-                <div className='col'>
-                    <label className="form-label">Age</label>
-                    <input type='number' placeholder='Age' className="form-control col" value={clinician.age} name='age' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
-                </div>
-
-                <div className='col'>
-                    <label className="form-label">Gender</label>
-                    <Form.Select aria-label="Default select example"
-                        value={clinician.gender} name='gender' onChange={(e) => { handleClinicianFormOnChange(e) }}>
-                        {
-                            gender.map((sex, index) => {
-                                return <option key={index} value={index} >{sex}</option>
-                            })
-                        }
-                    </Form.Select>
-                </div>
-
-                <div className='col'>
-                    <label className="form-label">Role</label>
-                    <Form.Select aria-label="Default select example"
-                        value={clinician.role} name='role' onChange={(e) => { handleClinicianFormOnChange(e) }}>
-                        {
-                            role.map((group, index) => {
-                                return <option key={index} value={index} >{group}</option>
-                            })
-                        }
-                    </Form.Select>
-                </div>
-            </div>
-            <br />
-        </form>
+                <br/>
+                <label className="form-label">Qualification</label>
+                <input type='text' placeholder='eg: MBBS' className='form-control' value={clinician.qualification} name='qualification' onChange={(e) => { handleClinicianFormOnChange(e) }}></input>
+                <br />
+            </form>
         </Modal.Body>
         <Modal.Footer>
             <Button variant="success" onClick={() => { addNewClinician() }}>Save</Button>

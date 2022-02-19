@@ -2,9 +2,10 @@ import axios from 'axios'
 
 const base_url = process.env.REACT_APP_LOCAL_APPLICATION_SERVER
 
-export const getClinicians = async (page, size, token) => {
+export const getClinicians = async (token) => {
 
-    let url = base_url + `api/doctors?page=${page}&size=${size}`
+    // let url = base_url + `api/doctors?page=${page}&size=${size}`
+    let url = base_url + `api/doctors`
     let config = {
         headers: { Authorization: `Bearer ${token}` }
     }
@@ -40,11 +41,13 @@ export const getClinicianById = async (id, token) => {
     })
 }
 
-export const getPatients = (page, size, token) => {
-    let url = base_url + `api/patients?page=${page}&size=${size}`
+export const getPatients = (token) => {
+    // let url = base_url + `api/patients?page=${page}&size=${size}`
+    let url = base_url + `api/patients`
     let config = {
         headers: { Authorization: `Bearer ${token}` }
     }
+    console.log(url,config)
     return new Promise((resolve, reject) => {
         axios.get(url, config).then(res => {
             if (res["data"] && res['data']['content']) {
@@ -67,7 +70,6 @@ export const getPatientById = async (id, token) => {
     return new Promise((resolve, reject) => {
         axios.get(url, config).then(res => {
             if (res["data"] && res['data']['content']) {
-                console.log(res.data.content)
                 resolve(res['data']['content'])
             } else {
                 throw (new Error("no data received"))
@@ -104,6 +106,46 @@ export const getPatientHistory = async (id, token) => {
                 } else {
                     resolve([])
                 }
+            } else {
+                throw (new Error("no data received"))
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    })
+}
+
+export const addPatient=async(patient,token)=>{
+    let url = base_url + `api/patients`
+    let body = patient
+    let config = {
+        headers: { Authorization: `Bearer ${token}` }
+    }
+
+    return new Promise((resolve, reject) => {
+        axios.post(url,body,config).then(res => {
+            if (res["data"] && res['data']['patient']) {
+                resolve(res['data']['patient'])
+            } else {
+                throw (new Error("no data received"))
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    })
+}
+
+export const addClinician=async(clinician,token)=>{
+    let url = base_url + `api/doctors`
+    let body = clinician
+    let config = {
+        headers: { Authorization: `Bearer ${token}` }
+    }
+
+    return new Promise((resolve, reject) => {
+        axios.post(url,body,config).then(res => {
+            if (res["data"] && res['data']['doctor']) {
+                resolve(res['data']['doctor'])
             } else {
                 throw (new Error("no data received"))
             }

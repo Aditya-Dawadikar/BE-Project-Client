@@ -13,7 +13,6 @@ const ClinicianList = () => {
   const clinicianListFromStore = useSelector((state) => state.allClinicians.allClinicians)
 
   useEffect(() => {
-    console.log(clinicianListFromStore)
     setClinicianList(clinicianListFromStore)
   }, [clinicianListFromStore])
 
@@ -77,7 +76,7 @@ const ClinicianList = () => {
                 <div className='row'>
                   <div className="col">ID</div>
                   <div className="col">Clinician Name</div>
-                  <div className="col">Role</div>
+                  <div className="col">Qualification</div>
                   <div className="col">Action</div>
                 </div>
               </li>

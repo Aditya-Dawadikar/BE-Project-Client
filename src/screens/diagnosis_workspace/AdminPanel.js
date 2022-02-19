@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react'
+import React,{useEffect} from 'react'
 
 import { Tabs, Tab } from 'react-bootstrap'
 
@@ -11,13 +11,16 @@ import { useDispatch } from 'react-redux'
 import {clinicianListAction} from '../../redux/actions/clinicianListActions'
 import { patientListAction } from '../../redux/actions/patientListActions'
 
+import {isAuthenticated} from '../../services/Auth'
+
 const AdminPanel = () => {
+    isAuthenticated()
 
     const dispatch = useDispatch()
 
     useEffect(()=>{
-        dispatch(clinicianListAction(1,5))
-        dispatch(patientListAction(1,5))
+        dispatch(clinicianListAction())
+        dispatch(patientListAction())
     },[])
 
     return (

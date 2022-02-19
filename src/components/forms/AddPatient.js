@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Form, Modal,Button } from 'react-bootstrap'
+import { Form, Modal, Button } from 'react-bootstrap'
 
 import { addPatientAction } from '../../redux/actions/patientListActions'
 
@@ -8,15 +8,15 @@ import { useDispatch } from 'react-redux';
 const AddPatient = (props) => {
     const dispatch = useDispatch();
 
-    const formDefault={
-        firstname:"",
-        lastname:"",
-        email:"",
-        phone:"",
-        age:"",
-        weight:"",
-        gender:"",
-        bloodgroup:""
+    const formDefault = {
+        firstname: "",
+        lastname: "",
+        email: "",
+        phone: "",
+        age: "",
+        weight: "",
+        gender: "",
+        bloodgroup: ""
     }
     const [patient, setpatient] = useState(formDefault)
     const gender = ["none", "male", "female"]
@@ -27,10 +27,55 @@ const AddPatient = (props) => {
     }
 
     const addNewPatient = () => {
-        alert("patient saved successfully")
-        console.log(patient)
-        setpatient(formDefault)
-        dispatch(addPatientAction(patient))
+        if (validateForm()) {
+            alert("patient saved successfully")
+            console.log(patient)
+            let patient_object = patient
+            patient_object.name= patient.firstname+" "+patient.lastname
+            dispatch(addPatientAction(patient_object))
+            setpatient(formDefault)
+        }
+    }
+
+    function validateForm() {
+        const nameRegex = /^[A-Za-z]+$/
+        const emailRegex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
+        const phoneRegex = /^[0-9]{10}$/
+
+        if (!nameRegex.test(patient.firstname) || patient.firstname ==="") {
+            alert("firstname is invalid")
+            return false
+        }
+        else if (!nameRegex.test(patient.lastname) || patient.lastname ==="") {
+            alert("lastname is invalid")
+            return false
+        }
+        else if (!phoneRegex.test(patient.phone) || patient.phone === "") {
+            alert("phone number is invalid")
+            return false
+        }
+        else if (!emailRegex.test(patient.email) || patient.email === "") {
+            alert("email is invalid")
+            return false
+        }
+        else if (patient.age === '') {
+            alert("age is mandatory")
+            return false
+        }
+        else if (patient.weight === '') {
+            alert("weight is mandatory")
+            return false
+        }
+        else if (patient.gender === '') {
+            alert("gender is mandatory")
+            return false
+        }
+        else if (patient.bloodgroup === '') {
+            alert("bloodgroup is mandatory")
+            return false
+        } else {
+            return true
+        }
     }
 
     return <Modal
@@ -48,7 +93,7 @@ const AddPatient = (props) => {
                 <div className="row">
                     <div className='col'>
                         <label className="form-label">First Name</label>
-                        <input type='text' placeholder='John' className="form-control col" value={patient.firstname} name="firstname" onChange={(e) => { handlePatientFormOnChange(e) }}></input>
+                        <input type='text' placeholder='John' pattern='^[A-Za-z]+$' className="form-control col" value={patient.firstname} name="firstname" onChange={(e) => { handlePatientFormOnChange(e) }}></input>
                     </div>
                     <div className='col'>
                         <label className="form-label">Last Name</label>

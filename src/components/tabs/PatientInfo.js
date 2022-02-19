@@ -26,7 +26,6 @@ const PatientInfo = () => {
             let history=await getPatientHistory(id,token)
             setPatient(patient)
             sethistory(history)
-            console.log(history[0])
         }
         handleLoad()
     },[])

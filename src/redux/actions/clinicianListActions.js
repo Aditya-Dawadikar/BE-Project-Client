@@ -1,14 +1,15 @@
 import {actions} from '../constants/clinicianListConstants'
 
-import {getClinicians} from '../../services/ClinicDataAPI'
+import {addClinician, getClinicians} from '../../services/ClinicDataAPI'
 
-export const clinicianListAction = (page,size)=>async(dispatch)=>{
+export const clinicianListAction = ()=>async(dispatch)=>{
     try{
         // handle get patient list logic here
 
         let token = JSON.parse(localStorage.getItem('clinicInfo')).token
+        // console.log(token)
         let res_clinicians=[]
-        await getClinicians(page,size,token)
+        await getClinicians(token)
             .then(res=>{
                 res_clinicians=res
             })
@@ -25,9 +26,11 @@ export const clinicianListAction = (page,size)=>async(dispatch)=>{
 
 export const addClinicianAction = (clinician)=>async(dispatch)=>{
     try{
+        let token = JSON.parse(localStorage.getItem('clinicInfo')).token
+        let saved_clinician = await addClinician(clinician,token)
         dispatch({
             type:actions.ADD_NEW_CLINICIAN,
-            payload:clinician
+            payload:saved_clinician
         })
     }catch(err){
         console.log(err)

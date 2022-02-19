@@ -45,7 +45,7 @@ const ClinicianInfo = () => {
     const target = useRef(null);
 
     return <div className="container">
-        <div className='h4'><img className="m-1" src={ClinicianIcon} style={{ width: "40px" }} />Clinician: {clinician.name}</div>
+        <div className='h4'><img className="m-1" src={ClinicianIcon} style={{ width: "40px" }} />Clinician: Dr. {clinician.name}</div>
         <div>Qualification: {clinician.degree}</div>
         <div className="row">
             <div className='col'>
@@ -56,17 +56,6 @@ const ClinicianInfo = () => {
             </div>
         </div>
         <div style={{ width: "100%", height: "2px", "--bs-bg-opacity": ".2" }} className="bg-secondary m-1"></div>
-        <div className="row">
-            {/* <div className='col'>
-                <div>Age: {clinician.age}</div>
-            </div> */}
-            {/* <div className='col'>
-                <div>Sex: {clinician.gender}</div>
-            </div> */}
-            {/* <div className='col'>
-                <div>Qualification: {clinician.degree}</div>
-            </div> */}
-        </div>
         <br /><br />
         <div className="h4">Diagnosed Patients</div>
         <ul className="list-group">

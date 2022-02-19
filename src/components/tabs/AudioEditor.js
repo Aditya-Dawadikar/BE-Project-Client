@@ -23,7 +23,7 @@ const AudioEditor = () => {
 
     const [signaldata, setSignaldata] = useState([])
     const [samplingrate, setSamplingrate] = useState(0)
-    const [audiofile, setAudiofile] = useState()
+    const [audiofile, setAudiofile] = useState(null)
     const [scalingfactor, setscalingfactor] = useState(200)
     const [endpoints, setendpoints] = useState({ start: 0, end: 0 })
     const [actualendpoints, setactualendpoints] = useState({ start: 0, end: 0 })

@@ -18,7 +18,6 @@ const PatientList = () => {
     const [patientpage, setpatientpage] = useState(patientcurrentindex)
 
     useEffect(() => {
-        console.log(patientListFromStore)
         setPatientList(patientListFromStore)
     }, [patientListFromStore])
 

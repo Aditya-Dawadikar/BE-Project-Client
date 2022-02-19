@@ -11,18 +11,20 @@ const ClinicianHorizontal = (props) => {
     const dispatch = useDispatch()
 
     const deleteClinician=()=>{
-        // alert("You are about to delete clinician")
-        dispatch(deleteClinicianAction(props.clinician))
+        var result = window.confirm("Are you sure, you want to delete?");
+        if (result) {
+            dispatch(deleteClinicianAction(props.clinician))
+        }
     }
 
     return (
         <div className='row'>
             <div className="col text-primary">{props.clinician.doctor_id}</div>
-            <div className="col">{props.clinician.name}</div>
+            <div className="col">Dr. {props.clinician.name}</div>
             <div className="col">{props.clinician.degree}</div>
             <div className="col">
                 <div className='btn btn-success m-1'><Link className='text-white text-decoration-none' to={`/clinic/clinician?id=${props.clinician.doctor_id}`}>Visit</Link></div>
-                <div className='btn btn-danger m-1' onClick={()=>{deleteClinician()}}>  <img src={DeleteIcon} style={{width:"20px"}}/> delete</div>
+                <div className='btn btn-danger m-1' onClick={()=>{deleteClinician()}}>delete</div>
             </div>
         </div>
     )
