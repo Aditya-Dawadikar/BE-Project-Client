@@ -75,7 +75,8 @@ const Clinic = () => {
                                 <Form.Control type="name" placeholder="Enter name" value={signupform.name} name='name' onChange={(e)=>{handleSignupChange(e)}}/>
                                 <Form.Text className="text-muted">
                                 </Form.Text>
-                            </Form.Group><Form.Group className="mb-3" controlId="formBasicEmail">
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Phone</Form.Label>
                                 <Form.Control type="text" placeholder="Enter phone" value={signupform.phone} name='phone' onChange={(e)=>{handleSignupChange(e)}}/>
                                 <Form.Text className="text-muted">

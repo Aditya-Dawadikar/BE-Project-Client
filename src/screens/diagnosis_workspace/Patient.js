@@ -109,13 +109,15 @@ const Patient = () => {
         function scrollToTop(){
             window.scrollTo(0,0)
         }
-        return <div className='btn btn-primary back-to-top standard-shadow' onClick={()=>{scrollToTop()}}>Back to Top</div>
+        return <div className='btn btn-primary back-to-top standard-shadow' onClick={()=>{scrollToTop()}}>
+            <img src="https://img.icons8.com/external-those-icons-fill-those-icons/24/FFFFFF/external-up-arrows-those-icons-fill-those-icons-1.png"/>
+        </div>
     }
 
     return (<div>
             <div>
                 <ClinicNavigation />
-                <Tabs defaultActiveKey="Workspace" id="uncontrolled-tab-example" className="mb-3">
+                <Tabs defaultActiveKey="Information" id="uncontrolled-tab-example" className="mb-3">
                     <Tab eventKey="Information" title="Information">
                         <PatientInfo></PatientInfo>
                     </Tab>

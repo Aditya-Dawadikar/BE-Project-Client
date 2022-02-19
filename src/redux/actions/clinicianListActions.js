@@ -1,11 +1,22 @@
 import {actions} from '../constants/clinicianListConstants'
 
-export const clinicianListAction = (clinicianList)=>async(dispatch)=>{
+import {getClinicians} from '../../services/ClinicDataAPI'
+
+export const clinicianListAction = (page,size)=>async(dispatch)=>{
     try{
         // handle get patient list logic here
+
+        let token = JSON.parse(localStorage.getItem('clinicInfo')).token
+        let res_clinicians=[]
+        await getClinicians(page,size,token)
+            .then(res=>{
+                res_clinicians=res
+            })
+            .catch(err=>{console.log(err)})
+
         dispatch({
             type:actions.GET_ALL_CLINICIANS,
-            payload:clinicianList
+            payload:res_clinicians
         })
     }catch(err){
         console.log(err)

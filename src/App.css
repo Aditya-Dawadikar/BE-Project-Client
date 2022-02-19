@@ -78,7 +78,6 @@
       bottom:100px;
       right:100px;
       z-index: 10;
-      width: 100px;
   }
 
   .standard-shadow{
@@ -93,4 +92,11 @@
       background-color: #888;
       border-radius: 50%;
       margin:3px
+  }
+
+  @media only screen and (max-width: 1000px){
+    .back-to-top{
+        bottom:20px;
+        right:20px;
+    }
   }

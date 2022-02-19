@@ -72,9 +72,9 @@ const PatientList = () => {
                         <ul className='list-group container-fluid'>
                             <li className='list-group-item active'>
                                 <div className='row'>
-                                    <div className="col">Avatar</div>
+                                    {/* <div className="col">Avatar</div> */}
+                                    <div className="col">ID</div>
                                     <div className="col">Patient Name</div>
-                                    <div className="col">Diagnosis</div>
                                     <div className="col">Action</div>
                                 </div>
                             </li>

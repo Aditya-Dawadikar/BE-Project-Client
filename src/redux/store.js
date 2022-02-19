@@ -9,7 +9,7 @@ import { audioEditorReducer } from './reducers/audioEditorReducer';
 const reducer = combineReducers({
     clinicLogin: clinicLoginReducer,
     clinicRegister: clinicRegisterReducer,
-    allPatients:patientListReducer,
+    allPatients: patientListReducer,
     allClinicians: clinicianListReducer,
     allSegments: audioEditorReducer
 })

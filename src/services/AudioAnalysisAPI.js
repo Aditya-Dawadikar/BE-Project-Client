@@ -8,7 +8,7 @@ export function predict(signaldata, samplingrate) {
 
     // console.log(megaBytes)
 
-    let url = 'http://localhost:5000/api/analysis/predict'
+    let url = 'http://localhost:8000/api/analysis/predict'
     let body = {
         signaldata: signaldata,
         samplingrate: samplingrate
