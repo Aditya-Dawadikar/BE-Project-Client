@@ -7,26 +7,18 @@ import { useSearchParams } from 'react-router-dom';
 
 import { getClinicianById } from '../../services/ClinicDataAPI';
 
+import { useDispatch } from 'react-redux';
+import {setCurrentClinician} from '../../redux/actions/consultancyActions'
+
 const ClinicianInfo = () => {
+    const dispatch = useDispatch()
 
     let [searchParams, setSearchParams] = useSearchParams();
 
     const [clinician, setClinician] = useState({
     })
 
-    const [patients, setpatients] = useState([
-        {
-            patient_id: "121415",
-            patient_name: "aknfbaiw wubdabu",
-            diagnosis: "healthy",
-            severity: 0,
-        }, {
-            patient_id: "1241515",
-            patient_name: "awgwghw wetabu",
-            diagnosis: "asthma",
-            severity: 3,
-        }
-    ])
+    const [patients, setpatients] = useState([])
 
     useEffect(() => {
         async function handleLoad(){
@@ -34,6 +26,7 @@ const ClinicianInfo = () => {
             let token = JSON.parse(localStorage.getItem('clinicInfo')).token
             let clinician=await getClinicianById(id,token)
             setClinician(clinician)
+            dispatch(setCurrentClinician(clinician))
         }
         handleLoad()
     },[])

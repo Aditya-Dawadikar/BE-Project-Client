@@ -7,8 +7,11 @@ import { useSearchParams,Link } from 'react-router-dom';
 
 import { getPatientById,getPatientHistory } from '../../services/ClinicDataAPI';
 
+import { useDispatch } from 'react-redux';
+import {setCurrentPatient} from '../../redux/actions/consultancyActions'
 
 const PatientInfo = () => {
+    const dispatch = useDispatch()
 
     let [searchParams,setSearchParams] =useSearchParams()
 
@@ -18,6 +21,8 @@ const PatientInfo = () => {
     const [history, sethistory] = useState([
     ])
 
+    const report = "https://storage.googleapis.com/be-project-4b4bf.appspot.com/reports/1644304931_93d573059e3c4fbd829585eadf78b541.pdf"
+
     useEffect(() => {
         async function handleLoad(){
             let id=searchParams.get('id')
@@ -26,6 +31,7 @@ const PatientInfo = () => {
             let history=await getPatientHistory(id,token)
             setPatient(patient)
             sethistory(history)
+            dispatch(setCurrentPatient(patient))
         }
         handleLoad()
     },[])
@@ -108,7 +114,8 @@ const PatientInfo = () => {
                             <div className='col'>{entry.diagnosis}</div>
                             <div className='col'><div className='btn m-1' style={{ 'background': severitycode[severity.indexOf(entry.severity)] }}></div>{entry.severity}</div>
                             <div className='col'>{
-                                entry.report ? <div className="btn btn-success"><a href={entry.report} target='_blank' className='text-white text-decoration-none'>Report</a></div> : "Nothing to show"
+                                // entry.report ? <div className="btn btn-success"><a href={entry.report} target='_blank' className='text-white text-decoration-none'>Report</a></div> : "Nothing to show"
+                                entry.report ? <div className="btn btn-success"><a href={report} target='_blank' className='text-white text-decoration-none'>Report</a></div> : "Nothing to show"
                             }</div>
                         </div>
                     </li>

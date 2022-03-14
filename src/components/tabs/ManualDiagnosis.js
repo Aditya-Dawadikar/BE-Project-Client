@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
-import { Form } from 'react-bootstrap'
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-const ManualDiagnosis = ({ seglist }) => {
+import SegmentForm from '../forms/SegmentForm';
 
-    const abnormality = ["crackle", "none", "wheeze"]
-    const diagnosis = ["asthma", "bronchial", "copd", "healthy", "pneumonia"]
-    const severity = ['asymptomatic', 'moderate manifestation', 'major manifestation', 'catastrophic manifestation']
-    const severitycode = ['#84ff00', '#fff222', '#ff5e00', '#ff0000']
+const ManualDiagnosis = () => {
+
+    const dispatch = useDispatch()
+    const allSegments = useSelector((state)=>state.allSegments.allSegments)
+
+    console.log(allSegments)
+
+    const [diagnosed, setdiagnosed] = useState([])
+
+    useEffect(() => {
+        console.log(diagnosed)
+    }, [diagnosed])
 
     return <div id="manual-annotation">
         <p className='bg-warning text-center p-1'>
@@ -20,45 +28,9 @@ const ManualDiagnosis = ({ seglist }) => {
                 </div>
             </li>
             {
-                seglist.map((segment, index) => {
+                allSegments.map((segment, index) => {
                     return <li key={index} className='list-group-item'>
-                        <div className='row'>
-                            <div className='col-3'>{segment.name}</div>
-                            <div className='col-9'>
-                                <div className='row'>
-                                    <div className='col'>
-                                        <label className="form-label">Abnormality Detected *</label>
-                                        <Form.Select required>
-                                            {
-                                                abnormality.map((state, indx) => {
-                                                    return <option key={indx} value={indx} >{state}</option>
-                                                })
-                                            }
-                                        </Form.Select>
-                                    </div>
-                                    <div className='col'>
-                                        <label className="form-label">Disorder *</label>
-                                        <Form.Select required>
-                                            {
-                                                diagnosis.map((state, indx) => {
-                                                    return <option key={indx} value={indx} >{state}</option>
-                                                })
-                                            }
-                                        </Form.Select>
-                                    </div>
-                                    <div className='col'>
-                                        <label className="form-label">Severity *</label>
-                                        <Form.Select required>
-                                            {
-                                                severity.map((state, indx) => {
-                                                    return <option key={indx} value={indx} >{state}</option>
-                                                })
-                                            }
-                                        </Form.Select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <SegmentForm segment={segment} index={index} />
                     </li>
                 })
             }

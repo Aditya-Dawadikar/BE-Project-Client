@@ -9,12 +9,16 @@ import ClinicianVertical from '../../components/cards/Clinician Cards/ClinicianV
 
 import WaveIcon from '../../assets/icons/wave.png'
 
-import { useSelector } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 
 import { getClinicians } from '../../services/ClinicDataAPI'
 import { isAuthenticated } from '../../services/Auth'
 
+import {setCurrentClinician} from '../../redux/actions/consultancyActions'
+
 const Patient = () => {
+    const dispatch = useDispatch()
+
     isAuthenticated()
 
     const segListFromStore = useSelector((state) => state.allSegments.allSegments)
@@ -81,6 +85,7 @@ const Patient = () => {
                 className={segListFromStore.length > 0 ? 'btn btn-primary' : 'btn btn-secondary'}
                 onClick={() => {
                     setshowreport(!showreport)
+                    // window.scrollTo(0,1000)
                 }}>
                 <img src={WaveIcon} className='m-1' style={{ width: "20px" }} />
                 Analyse
@@ -105,8 +110,10 @@ const Patient = () => {
                     onChange={(e) => {
                         if (e.target.value >= 0) {
                             setclinician(allclinicians[e.target.value])
+                            dispatch(setCurrentClinician(allclinicians[e.target.value]))
                         } else {
                             setclinician(null)
+                            dispatch(setCurrentClinician({}))
                         }
                     }}>
                     <option value={-1}>Please select</option>
@@ -143,7 +150,7 @@ const Patient = () => {
     return (<div>
         <div>
             <ClinicNavigation />
-            <Tabs defaultActiveKey="Information" id="uncontrolled-tab-example" className="mb-3">
+            <Tabs defaultActiveKey="Workspace" id="uncontrolled-tab-example" className="mb-3">
                 <Tab eventKey="Information" title="Information">
                     <PatientInfo></PatientInfo>
                 </Tab>

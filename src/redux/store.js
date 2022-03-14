@@ -1,28 +1,43 @@
-import {createStore,combineReducers, applyMiddleware} from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import {composeWithDevTools} from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
+import logger from "redux-logger";
+
 import { clinicLoginReducer, clinicRegisterReducer } from './reducers/clinicReducers';
-import {patientListReducer} from './reducers/patientListReducer'
-import {clinicianListReducer} from './reducers/clinicianListReducer'
+import { patientListReducer } from './reducers/patientListReducer'
+import { clinicianListReducer } from './reducers/clinicianListReducer'
 import { audioEditorReducer } from './reducers/audioEditorReducer';
+import { clinicianReducer, patientReducer, consulatancyHighlightsReducer } from './reducers/consultancyReducer';
 
 const reducer = combineReducers({
     clinicLogin: clinicLoginReducer,
     clinicRegister: clinicRegisterReducer,
     allPatients: patientListReducer,
     allClinicians: clinicianListReducer,
-    allSegments: audioEditorReducer
+    allSegments: audioEditorReducer,
+    currPatient: patientReducer,
+    currClinician: clinicianReducer,
+    consultancyHighlights: consulatancyHighlightsReducer
 })
 
-const clinicInfoFromStorage = localStorage.getItem('clinicInfo') ? JSON.parse(localStorage.getItem('clinicInfo')) :  null
+const clinicInfoFromStorage = localStorage.getItem('clinicInfo') ? JSON.parse(localStorage.getItem('clinicInfo')) : null
 
 const initialState = {
     clinicLogin: { clinicInfo: clinicInfoFromStorage },
-    allPatients:{allPatients:[]},
-    allClinicians:{allClinicians:[]},
-    allSegments:{allSegments:[]}
+    allPatients: { allPatients: [] },
+    allClinicians: { allClinicians: [] },
+    allSegments: { allSegments: [] },
+    currClinician: { currClinician: {} },
+    currPatient: { currPatient: {} },
+    consultancyHighlights: {
+        consultancyHighlights: {
+            note: "",
+            summary: {},
+            symptoms: ""
+        }
+    }
 }
-const middleware = [thunk]
+const middleware = [thunk, logger]
 
 const store = createStore(
     reducer,
@@ -31,25 +46,3 @@ const store = createStore(
 )
 
 export default store
-
-// {
-//     firstname: "a",
-//     lastname: "",
-//     phone: "",
-//     email: "",
-//     age: 0,
-//     weight: 0,
-//     bloodgroup: 0,
-//     gender: 0,
-//     diagnosis: "abc"
-// }
-
-// {
-//     firstname: "aa",
-//     lastname: "",
-//     phone: "",
-//     email: "",
-//     age: 0,
-//     role: "saf",
-//     gender: 0
-// }

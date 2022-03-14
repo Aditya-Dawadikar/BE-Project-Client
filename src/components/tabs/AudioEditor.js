@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'
+import React, { useState, useEffect, useRef} from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+
+import {v4 as uuid} from 'uuid'
 
 import PlayIcon from '../../assets/icons/play.png'
 import PauseIcon from '../../assets/icons/pause.png'
@@ -194,7 +196,7 @@ const AudioEditor = () => {
                 actualendpoints: { start: parseInt(actualendpoints.start), end: parseInt(actualendpoints.end) },
                 timestamps: { start: parseInt(timestamps.start), end: parseInt(timestamps.end) },
                 data: signaldata.slice(Math.floor(timestamps.start * samplingrate), Math.floor(timestamps.end * samplingrate) + 1),
-                name: "segment " + String(seglist.length + 1),
+                name: uuid(),
                 samplingrate: samplingrate,
                 analysis: {
                     summary:{
@@ -215,7 +217,11 @@ const AudioEditor = () => {
                     },
                     severity: 0
                 },
-                
+                manual:{
+                    abnormality:"",
+                    disorder:"",
+                    severity:""
+                },
                 isAnalysed: false
             }
             setSeglist((seglist) => [...seglist, newSegment])
