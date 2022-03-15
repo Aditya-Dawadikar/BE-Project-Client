@@ -5,11 +5,14 @@ import AnalysisResult from './AnalysisResult'
 import AutomatedDiagnosis from './AutomatedDiagnosis'
 import ManualDiagnosis from './ManualDiagnosis'
 
-import { useSelector } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
+import {computeDiagnosisSummary} from '../../redux/actions/diagnosisAction'
 
 const ReportGeneration = () => {
 
     const segListFromStore = useSelector((state) => state.allSegments.allSegments)
+    const summary = useSelector((state)=>state.diagnosis.summary)
+    const dispatch = useDispatch()
 
     useEffect(() => {
 
@@ -32,7 +35,7 @@ const ReportGeneration = () => {
             }
 
             function average(list) {
-                let sum=0
+                let sum = 0
                 for (let i = 0; i < list.length; i++) {
                     sum += list[i]
                 }
@@ -43,70 +46,71 @@ const ReportGeneration = () => {
                 return average(severityArray)
             }
 
-            function makeArrayFromMatrix(index,matrix){
+            function makeArrayFromMatrix(index, matrix) {
                 let arr = []
-                for(let i=0;i<matrix.length;i++){
+                for (let i = 0; i < matrix.length; i++) {
                     arr.push(matrix[i][index]);
                 }
                 return arr
             }
 
             function getAbnormalityAverage() {
-                let abnormalityAverage=[]
-                for(let i=0;i<abnormalityClasses.length;i++){
-                    let reqArr = makeArrayFromMatrix(i,abnormalityMatrix)
+                let abnormalityAverage = []
+                for (let i = 0; i < abnormalityClasses.length; i++) {
+                    let reqArr = makeArrayFromMatrix(i, abnormalityMatrix)
                     let avg = average(reqArr)
                     abnormalityAverage.push(avg)
                 }
                 return abnormalityAverage
             }
             function getDisorderAverage() {
-                let disorderAverage=[]
-                for(let i=0;i<disorderClasses.length;i++){
-                    let reqArr = makeArrayFromMatrix(i,disorderMatrix)
+                let disorderAverage = []
+                for (let i = 0; i < disorderClasses.length; i++) {
+                    let reqArr = makeArrayFromMatrix(i, disorderMatrix)
                     let avg = average(reqArr)
                     disorderAverage.push(avg)
                 }
                 return disorderAverage
             }
 
-            function getMaxClassValue(classes,values){
+            function getMaxClassValue(classes, values) {
                 let max = Math.max(...values);
                 let index = values.indexOf(max);
                 let reqClass = classes[index]
                 return {
-                    "class":reqClass,
-                    "probability":max
+                    "class": reqClass,
+                    "probability": max
                 }
             }
 
-            abnormalitySummary=getMaxClassValue(abnormalityClasses,getAbnormalityAverage())
-            disorderSummary=getMaxClassValue(disorderClasses,getDisorderAverage())
-            severitySummary=getSeveritySummary()
+            abnormalitySummary = getMaxClassValue(abnormalityClasses, getAbnormalityAverage())
+            disorderSummary = getMaxClassValue(disorderClasses, getDisorderAverage())
+            severitySummary = getSeveritySummary()
 
             return {
-                abnormality:abnormalitySummary,
-                disorder:disorderSummary,
-                severity:severitySummary
+                abnormality: abnormalitySummary,
+                disorder: disorderSummary,
+                severity: severitySummary
             }
         }
 
-        if(segListFromStore[0].isAnalysed===true){
+        if (segListFromStore[0].isAnalysed === true) {
             console.log(getSummary())
         }
         setseglist(segListFromStore)
+        dispatch(computeDiagnosisSummary(segListFromStore))
     }, [segListFromStore])
 
     const [seglist, setseglist] = useState([])
-    const [summary, setsummary] = useState({
-        abnormality: {
-            class: "Crackle",
-            probability: 97
-        }, disorder: {
-            class: "COPD",
-            probability: 83
-        }, severity: 3
-    })
+    // const [summary, setsummary] = useState({
+    //     abnormality: {
+    //         class: "",
+    //         probability: 0
+    //     }, disorder: {
+    //         class: "",
+    //         probability: 0
+    //     }
+    // })
 
     const [note, setnote] = useState("")
     const [symptoms, setsymptoms] = useState("")
@@ -124,6 +128,7 @@ const ReportGeneration = () => {
 
     return (
         <div className='container'>
+            {/* <div className='btn btn-primary' onClick={()=>{test()}}>Test</div> */}
             <Tabs activeKey={activetab} onSelect={(k) => setactivetab(k)} id="report-generator" className="mb-3">
                 <Tab eventKey="Analysis" title="Analysis">
                     <AnalysisResult />
@@ -133,7 +138,7 @@ const ReportGeneration = () => {
                     </div>
                 </Tab>
                 <Tab eventKey="AutomatedDiagnosis" title="Automated Diagnosis">
-                    <AutomatedDiagnosis summary={summary} />
+                    <AutomatedDiagnosis summary={summary}/>
                 </Tab>
                 <Tab eventKey="ManualDiagnosis" title="Manual Diagnosis">
                     <ManualDiagnosis />

@@ -8,6 +8,7 @@ import { patientListReducer } from './reducers/patientListReducer'
 import { clinicianListReducer } from './reducers/clinicianListReducer'
 import { audioEditorReducer } from './reducers/audioEditorReducer';
 import { clinicianReducer, patientReducer, consulatancyHighlightsReducer } from './reducers/consultancyReducer';
+import { diagnosisReducer } from './reducers/diagnosisReducer';
 
 const reducer = combineReducers({
     clinicLogin: clinicLoginReducer,
@@ -17,7 +18,8 @@ const reducer = combineReducers({
     allSegments: audioEditorReducer,
     currPatient: patientReducer,
     currClinician: clinicianReducer,
-    consultancyHighlights: consulatancyHighlightsReducer
+    consultancyHighlights: consulatancyHighlightsReducer,
+    diagnosis: diagnosisReducer
 })
 
 const clinicInfoFromStorage = localStorage.getItem('clinicInfo') ? JSON.parse(localStorage.getItem('clinicInfo')) : null
@@ -34,6 +36,17 @@ const initialState = {
             note: "",
             summary: {},
             symptoms: ""
+        }
+    },
+    diagnosis: {
+        summary: {
+            abnormality: {
+                class: [],
+                probabilities: []
+            }, disorder: {
+                class: [],
+                probabilities: []
+            }
         }
     }
 }
