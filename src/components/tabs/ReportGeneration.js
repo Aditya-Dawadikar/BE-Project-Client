@@ -26,8 +26,6 @@ const ReportGeneration = () => {
             let disorderMatrix = []
 
             for (let i = 0; i < segListFromStore.length; i++) {
-                // console.log(Object.values(segListFromStore[i].analysis.abnormality))
-                // console.log(Object.values(segListFromStore[i].analysis.disorder))
                 abnormalityMatrix.push(Object.values(segListFromStore[i].analysis.abnormality))
                 disorderMatrix.push(Object.values(segListFromStore[i].analysis.disorder))
                 severityArray.push(segListFromStore[i].analysis.severity)
@@ -85,10 +83,6 @@ const ReportGeneration = () => {
             abnormalitySummary=getMaxClassValue(abnormalityClasses,getAbnormalityAverage())
             disorderSummary=getMaxClassValue(disorderClasses,getDisorderAverage())
             severitySummary=getSeveritySummary()
-
-            // console.log(segListFromStore)
-            // console.log(abnormalityMatrix)
-            // console.log(disorderMatrix)
 
             return {
                 abnormality:abnormalitySummary,

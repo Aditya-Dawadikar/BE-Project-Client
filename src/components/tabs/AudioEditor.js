@@ -16,7 +16,6 @@ const AudioEditor = () => {
     const segListFromStore = useSelector((state)=>state.allSegments.allSegments)
 
     useEffect(()=>{
-        console.log(segListFromStore)
         setSeglist(segListFromStore)
     },[segListFromStore])
 
@@ -210,8 +209,9 @@ const AudioEditor = () => {
                     },
                     disorder: {
                         asthma: 0,
-                        bronchial_disorders: 0,
-                        copd: 0,
+                        bronchiectasis: 0,
+                        bronchiolitis:0,
+                        fibrosis: 0,
                         healthy: 0,
                         pneumonia: 0,
                     },

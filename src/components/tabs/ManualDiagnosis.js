@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import SegmentForm from '../forms/SegmentForm';
@@ -7,14 +7,6 @@ const ManualDiagnosis = () => {
 
     const dispatch = useDispatch()
     const allSegments = useSelector((state)=>state.allSegments.allSegments)
-
-    console.log(allSegments)
-
-    const [diagnosed, setdiagnosed] = useState([])
-
-    useEffect(() => {
-        console.log(diagnosed)
-    }, [diagnosed])
 
     return <div id="manual-annotation">
         <p className='bg-warning text-center p-1'>
@@ -30,7 +22,7 @@ const ManualDiagnosis = () => {
             {
                 allSegments.map((segment, index) => {
                     return <li key={index} className='list-group-item'>
-                        <SegmentForm segment={segment} index={index} />
+                        <SegmentForm index={index} />
                     </li>
                 })
             }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import DataContainer from '../report_generator/DataContainer'
 
 import { useSelector } from 'react-redux';
@@ -6,10 +6,6 @@ import { useSelector } from 'react-redux';
 const AnalysisResult = () => {
 
     const segListFromStore = useSelector((state)=>state.allSegments.allSegments)
-
-    useEffect(()=>{
-        console.log(segListFromStore)
-    },[segListFromStore])
 
     return <ul className='list-group'>
         <li className='list-group-item active'>
@@ -25,7 +21,7 @@ const AnalysisResult = () => {
         {
             segListFromStore.map((segment, index) => {
                 return <li key={index} className='list-group-item'>
-                    <DataContainer segid={index} segment={segment} />
+                    <DataContainer segid={index} />
                 </li>
             })
         }

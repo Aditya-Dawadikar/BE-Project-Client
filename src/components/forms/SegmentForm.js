@@ -5,7 +5,7 @@ import {toast} from 'react-toastify'
 import { useDispatch,useSelector } from 'react-redux';
 import {updateSegmentAction} from '../../redux/actions/audioEditorActions'
 
-const SegmentForm = ({ segment, index }) => {
+const SegmentForm = ({ index }) => {
 
     const dispatch = useDispatch()
     const allSegments = useSelector((state)=>state.allSegments.allSegments)
@@ -59,7 +59,7 @@ const SegmentForm = ({ segment, index }) => {
     },[segform])
 
     return <div className='row'>
-        <div className='col-3'>{segment.name}</div>
+        <div className='col-3'>{allSegments[index].name}</div>
         <div className='col-9'>
             <div className='row'>
                 <div className='col'>
