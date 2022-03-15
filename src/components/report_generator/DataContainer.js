@@ -23,10 +23,17 @@ const DataContainer = ({ segid }) => {
     //     isAnalysed:false
     // }
     const segment = useSelector((state) => state.allSegments.allSegments[segid])
+    const [isFetched, setisFetched] = useState(false)
+    useEffect(() => {
+        if (typeof segListFromStore[segid].analysis !== undefined && typeof segListFromStore[segid].data !== undefined) {
+            setisFetched(true)
+        } else {
+            setisFetched(false)
+        }
+    }, [segid])
 
-    const abnormality = ["crackle", "none", "wheeze"]
-    const disorder = ["asthma", "bronchial", "copd", "healthy", "pneumonia"]
-
+    const abnormality = ['crackles', 'wheezes', 'normal']
+    const disorder = ['asthma', 'bronchiectasis', 'bronchiolitis', 'fibrosis', 'healthy', 'pneumonia']
     const segListFromStore = useSelector((state) => state.allSegments.allSegments)
 
     useEffect(() => {
@@ -37,7 +44,7 @@ const DataContainer = ({ segid }) => {
                 if (values[index] !== 0)
                     return disorder[index]
             }
-            return -1
+            return null
         }
 
         function getAbnormality(datamap) {
@@ -47,7 +54,7 @@ const DataContainer = ({ segid }) => {
                 if (values[index] !== 0)
                     return abnormality[index]
             }
-            return -1
+            return null
         }
 
         function getAnalysis() {
@@ -74,10 +81,86 @@ const DataContainer = ({ segid }) => {
 
     return <div className='row'>
         <div className='col'>
-            <DataTable index={segid} />
+            <p className='font-weight-bold'>Summary</p>
+            {
+                isFetched === true ? <ul className='list-group'>
+                    <li className='list-group-item'>
+                        <div className='row'>
+                            <div className='col text-end'>
+                                Segment Name :
+                            </div>
+                            <div className='col'>
+                                {segListFromStore[segid].name || ""}
+                            </div>
+                        </div>
+                    </li>
+                    <li className='list-group-item'>
+                        <div className='row'>
+                            <div className='col text-end'>
+                                Abnormality :
+                            </div>
+                            <div className='col'>
+                                {segListFromStore[segid].analysis.summary.abnormality || ""}
+                            </div>
+                        </div>
+                    </li>
+                    <li className='list-group-item'>
+                        <div className='row'>
+                            <div className='col text-end'>
+                                Disorder :
+                            </div>
+                            <div className='col'>
+                                {segListFromStore[segid].analysis.summary.disorder|| ""}
+                            </div>
+                        </div>
+                    </li>
+                </ul> : <></>
+            }
+        </div>
+        {/* <div className='col'>
+            <DataVisualizer index={segid} />
+        </div> */}
+        <div className='col'>
+            <p className='font-weight-bold'>Disorder Analysis</p>
+            {
+                isFetched === true ? <ul className='list-group'>
+                    {
+                        Object.keys(segListFromStore[segid].analysis.disorder).map((key, it) => {
+                            return <li className='list-group-item'>
+                                <div className='row'>
+                                    <div className='col text-end'>
+                                        {Object.keys(segListFromStore[segid].analysis.disorder)[it]} :
+                                    </div>
+                                    <div className='col'>
+                                        {(Object.values(segListFromStore[segid].analysis.disorder)[it] * 100).toPrecision(2)}%
+                                    </div>
+                                </div>
+                            </li>
+                        })
+                    }
+                </ul> : <></>
+            }
         </div>
         <div className='col'>
-            <DataVisualizer index={segid} />
+            <p className='font-weight-bold'>Abnormality Analysis</p>
+            {
+                isFetched === true ? <ul className='list-group'>
+                    {
+                        Object.keys(segListFromStore[segid].analysis.abnormality).map((key, it) => {
+                            return <li className='list-group-item'>
+                                <div className='row'>
+                                    <div className='col text-end'>
+                                        {Object.keys(segListFromStore[segid].analysis.abnormality)[it]} :
+                                    </div>
+                                    <div className='col'>
+                                        {(Object.values(segListFromStore[segid].analysis.abnormality)[it] * 100).toPrecision(2)}%
+                                    </div>
+                                </div>
+                            </li>
+                        })
+                    }
+                </ul> : <></>
+            }
         </div>
     </div>
 
