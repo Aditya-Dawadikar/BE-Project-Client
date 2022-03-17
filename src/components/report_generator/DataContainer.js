@@ -5,6 +5,7 @@ import DataVisualizer from './DataVisualizer';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { updateSegmentAction } from '../../redux/actions/audioEditorActions'
+import {computeDiagnosisSummary} from '../../redux/actions/diagnosisAction'
 
 import { predict } from '../../services/AudioAnalysisAPI'
 
@@ -61,6 +62,7 @@ const DataContainer = ({ segid }) => {
             if (segment.isAnalysed === false) {
                 predict(segment.data, segment.samplingrate)
                     .then(res => {
+                        console.log(res.data)
                         let updatedSegments = segListFromStore
 
                         updatedSegments[segid].analysis.summary.abnormality = getAbnormality(res.data.abnormality)
@@ -69,8 +71,10 @@ const DataContainer = ({ segid }) => {
                         updatedSegments[segid].analysis.disorder = res.data.disorder
                         updatedSegments[segid].analysis.severity = res.data.severity
                         updatedSegments[segid].isAnalysed = true
+                        updatedSegments[segid].name = res.data.segment_id
 
                         dispatch(updateSegmentAction(updatedSegments))
+                        dispatch(computeDiagnosisSummary(segListFromStore))
                     }).catch(err => {
                         console.log(err)
                     })

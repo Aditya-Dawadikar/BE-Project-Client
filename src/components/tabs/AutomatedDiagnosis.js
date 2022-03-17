@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 
 const AutomatedDiagnosis = ({ summary }) => {
 
-    console.log(summary)
-
     return <div>
         The system suggested Diagnosis Summary is as follows:
         <br /><br />
