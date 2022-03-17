@@ -3,8 +3,6 @@ import React, { useEffect } from 'react';
 const AutomatedDiagnosis = ({ summary }) => {
 
     return <div>
-        The system suggested Diagnosis Summary is as follows:
-        <br /><br />
         <div className='row'>
             <div className='col'>
                 <p className='h4'>Disorder Analysis</p>
@@ -13,8 +11,8 @@ const AutomatedDiagnosis = ({ summary }) => {
                         summary.disorder.class.map((ele, index) => {
                             return <li className='list-group-item'>
                                 <div className='row'>
-                                    <div className='col text-end'>{ele} :</div>
-                                    <div className='col'>{summary.disorder.probabilities[index]}</div>
+                                    <div className='col text-end'><b>{ele} :</b></div>
+                                    <div className='col'>{(summary.disorder.probabilities[index] * 100).toFixed(4)}%</div>
                                 </div>
                             </li>
                         })
@@ -28,8 +26,8 @@ const AutomatedDiagnosis = ({ summary }) => {
                         summary.abnormality.class.map((ele, index) => {
                             return <li className='list-group-item row'>
                                 <div className='row'>
-                                    <div className='col text-end'>{ele} :</div>
-                                    <div className='col'>{summary.abnormality.probabilities[index]}</div>
+                                    <div className='col text-end'><b>{ele} :</b></div>
+                                    <div className='col'>{(summary.abnormality.probabilities[index] * 100).toFixed(4)}%</div>
                                 </div>
                             </li>
                         })

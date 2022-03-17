@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Tabs, Tab, Form } from 'react-bootstrap'
+import { Switch } from '@mui/material';
+
 import axios from 'axios'
 
 import AnalysisResult from './AnalysisResult'
@@ -42,52 +44,83 @@ const ReportGeneration = () => {
                 return arr.indexOf(max);
             }
 
-            let requestBody = {
-                "doctor_info": {
-                    "name": currClinician.name,
-                    "qualification": currClinician.degree,
-                    "clinic_address": currClinic.address,
-                    "id": currClinician.doctor_id
-                },
-                "patient_info": {
-                    "name": currPatient.name,
-                    "age": currPatient.age,
-                    "blood_group": currPatient.bloodGroup,
-                    "contact": currPatient.phone,
-                    "sex": currPatient.gender,
-                    "id": currPatient.patient_id
-                },
-                "report_summary": {
-                    "abnormality": {
-                        "name": currDiagnosis.abnormality.class[getMaxIndex(currDiagnosis.abnormality.probabilities)],
-                        "probability": currDiagnosis.abnormality.probabilities[getMaxIndex(currDiagnosis.abnormality.probabilities)]
-                    },
-                    "disorder": {
-                        "name": currDiagnosis.disorder.class[getMaxIndex(currDiagnosis.disorder.probabilities)],
-                        "probability": currDiagnosis.disorder.probabilities[getMaxIndex(currDiagnosis.disorder.probabilities)]
-                    }
-                },
-                "audio_segments": [],
-                "report_note": note,
-                "symptoms": symptoms,
-                "mode":"auto"
-            }
+            let diagnosisMode = "auto"
 
-            for (let i = 0; i < segListFromStore.length; i++) {
-                let segmentObject = {
-                    "filename": segListFromStore[i].name,
-                    "abnormality": {
-                        "classes": Object.keys(segListFromStore[i].analysis.abnormality),
-                        "probability": Object.values(segListFromStore[i].analysis.abnormality)
+            let requestBody = {}
+            if (checked === true) {
+                diagnosisMode = "manual"
+                requestBody = {
+                    "doctor_info": {
+                        "name": currClinician.name,
+                        "qualification": currClinician.degree,
+                        "clinic_address": currClinic.address,
+                        "id": currClinician.doctor_id
                     },
-                    "disorder": {
-                        "classes": Object.keys(segListFromStore[i].analysis.disorder),
-                        "probability": Object.values(segListFromStore[i].analysis.disorder)
+                    "patient_info": {
+                        "name": currPatient.name,
+                        "age": currPatient.age,
+                        "blood_group": currPatient.bloodGroup,
+                        "contact": currPatient.phone,
+                        "sex": currPatient.gender,
+                        "id": currPatient.patient_id
                     },
+                    "report_summary": {
+                        "abnormality": segListFromStore[0].manual.abnormality,
+                        "disorder": segListFromStore[0].manual.disorder,
+                        "severity": currSeverity
+                    },
+                    "audio_segments": [],
+                    "report_note": note,
                     "symptoms": symptoms,
-                    "severity": currSeverity
+                    "mode": diagnosisMode
                 }
-                requestBody.audio_segments.push(segmentObject)
+            } else {
+                requestBody = {
+                    "doctor_info": {
+                        "name": currClinician.name,
+                        "qualification": currClinician.degree,
+                        "clinic_address": currClinic.address,
+                        "id": currClinician.doctor_id
+                    },
+                    "patient_info": {
+                        "name": currPatient.name,
+                        "age": currPatient.age,
+                        "blood_group": currPatient.bloodGroup,
+                        "contact": currPatient.phone,
+                        "sex": currPatient.gender,
+                        "id": currPatient.patient_id
+                    },
+                    "report_summary": {
+                        "abnormality": {
+                            "name": currDiagnosis.abnormality.class[getMaxIndex(currDiagnosis.abnormality.probabilities)],
+                            "probability": currDiagnosis.abnormality.probabilities[getMaxIndex(currDiagnosis.abnormality.probabilities)]
+                        },
+                        "disorder": {
+                            "name": currDiagnosis.disorder.class[getMaxIndex(currDiagnosis.disorder.probabilities)],
+                            "probability": currDiagnosis.disorder.probabilities[getMaxIndex(currDiagnosis.disorder.probabilities)]
+                        }
+                    },
+                    "audio_segments": [],
+                    "report_note": note,
+                    "symptoms": symptoms,
+                    "mode": diagnosisMode
+                }
+                for (let i = 0; i < segListFromStore.length; i++) {
+                    let segmentObject = {
+                        "filename": segListFromStore[i].name,
+                        "abnormality": {
+                            "classes": Object.keys(segListFromStore[i].analysis.abnormality),
+                            "probability": Object.values(segListFromStore[i].analysis.abnormality)
+                        },
+                        "disorder": {
+                            "classes": Object.keys(segListFromStore[i].analysis.disorder),
+                            "probability": Object.values(segListFromStore[i].analysis.disorder)
+                        },
+                        "symptoms": symptoms,
+                        "severity": currSeverity
+                    }
+                    requestBody.audio_segments.push(segmentObject)
+                }
             }
 
             // console.log(requestBody)
@@ -142,10 +175,29 @@ const ReportGeneration = () => {
             return true
         }
 
-        if (validateSymptoms() === true && validateReportNote() === true && validateClinician() === true) {
+        function validateManualDiagnosis() {
+            for (let i = 0; i < segListFromStore.length; i++) {
+                if (
+                    segListFromStore[i].manual.abnormality == ''
+                    || segListFromStore[i].manual.disorder == ''
+                    || segListFromStore[i].manual.severity == ''
+                ) {
+                    toast.error("Please Mention Diagnosis Manually...You have selected manual diagnosis mode")
+                    return false
+                }
+            }
             return true
         }
 
+        if (checked === true) {
+            if (validateSymptoms() === true && validateReportNote() === true && validateClinician() === true && validateManualDiagnosis()) {
+                return true
+            }
+        } else if (checked === false) {
+            if (validateSymptoms() === true && validateReportNote() === true && validateClinician() === true) {
+                return true
+            }
+        }
         return false
     }
 
@@ -156,8 +208,24 @@ const ReportGeneration = () => {
         setCurrSeverity(e.target.value)
     }
 
+    const [checked, setChecked] = useState(false)
+    const handleModeChange = (event) => {
+        setChecked(event.target.checked);
+    };
+
+    useEffect(() => {
+        if (checked === true) {
+            setactivetab("ManualDiagnosis")
+            toast.success("Switched to Manual Diagnosis Mode")
+        } else {
+            setactivetab("AutomatedDiagnosis")
+            toast.success("Switched to Automated Diagnosis Mode")
+        }
+    }, [checked])
+
     return (
         <div className='container'>
+
             <Tabs activeKey={activetab} onSelect={(k) => setactivetab(k)} id="report-generator" className="mb-3">
                 <Tab eventKey="Analysis" title="Analysis">
                     <AnalysisResult />
@@ -175,7 +243,18 @@ const ReportGeneration = () => {
             </Tabs>
             <br />
             <div className='row'>
+
                 <div className='col'>
+                    <div className='d-flex m-2'>
+                        <p className='py-1 h4'>Auto Annotation</p>
+                        <Switch
+                            checked={checked}
+                            onChange={handleModeChange}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
+                        <p className='py-1 h4'>Manual Annotation</p>
+                    </div>
+
                     <div className='m-2'>
                         <label className="form-label">Mention Symptoms *</label>
                         <input

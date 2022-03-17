@@ -94,9 +94,9 @@ const DataContainer = ({ segid }) => {
                     <li className='list-group-item'>
                         <div className='row'>
                             <div className='col text-end'>
-                                Segment Name :
+                                <b>Segment Name :</b>
                             </div>
-                            <div className='col'>
+                            <div className='col text-break text-primary'>
                                 {segListFromStore[segid].name || ""}
                             </div>
                         </div>
@@ -104,7 +104,7 @@ const DataContainer = ({ segid }) => {
                     <li className='list-group-item'>
                         <div className='row'>
                             <div className='col text-end'>
-                                Abnormality :
+                                <b>Abnormality :</b>
                             </div>
                             <div className='col'>
                                 {segListFromStore[segid].analysis.summary.abnormality || ""}
@@ -114,7 +114,7 @@ const DataContainer = ({ segid }) => {
                     <li className='list-group-item'>
                         <div className='row'>
                             <div className='col text-end'>
-                                Disorder :
+                                <b>Disorder :</b>
                             </div>
                             <div className='col'>
                                 {segListFromStore[segid].analysis.summary.disorder|| ""}
@@ -136,7 +136,7 @@ const DataContainer = ({ segid }) => {
                             return <li className='list-group-item'>
                                 <div className='row'>
                                     <div className='col text-end'>
-                                        {Object.keys(segListFromStore[segid].analysis.disorder)[it]} :
+                                        <b>{Object.keys(segListFromStore[segid].analysis.disorder)[it]} :</b>
                                     </div>
                                     <div className='col'>
                                         {(Object.values(segListFromStore[segid].analysis.disorder)[it] * 100).toPrecision(2)}%
@@ -157,7 +157,7 @@ const DataContainer = ({ segid }) => {
                             return <li className='list-group-item'>
                                 <div className='row'>
                                     <div className='col text-end'>
-                                        {Object.keys(segListFromStore[segid].analysis.abnormality)[it]} :
+                                        <b>{Object.keys(segListFromStore[segid].analysis.abnormality)[it]} :</b>
                                     </div>
                                     <div className='col'>
                                         {(Object.values(segListFromStore[segid].analysis.abnormality)[it] * 100).toPrecision(2)}%
