@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateSegmentAction } from '../../redux/actions/audioEditorActions'
 import {computeDiagnosisSummary} from '../../redux/actions/diagnosisAction'
 
+import { toast } from 'react-toastify'
+
 import { predict } from '../../services/AudioAnalysisAPI'
 
 const DataContainer = ({ segid }) => {
@@ -75,6 +77,7 @@ const DataContainer = ({ segid }) => {
 
                         dispatch(updateSegmentAction(updatedSegments))
                         dispatch(computeDiagnosisSummary(segListFromStore))
+                        toast.success("Data analysed successfully, scroll down for more...")
                     }).catch(err => {
                         console.log(err)
                     })

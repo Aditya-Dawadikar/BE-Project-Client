@@ -195,7 +195,7 @@ const AudioEditor = () => {
                 actualendpoints: { start: parseInt(actualendpoints.start), end: parseInt(actualendpoints.end) },
                 timestamps: { start: parseInt(timestamps.start), end: parseInt(timestamps.end) },
                 data: signaldata.slice(Math.floor(timestamps.start * samplingrate), Math.floor(timestamps.end * samplingrate) + 1),
-                name: "",
+                name: uuid(),
                 samplingrate: samplingrate,
                 analysis: {
                     summary:{

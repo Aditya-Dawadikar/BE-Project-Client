@@ -23,16 +23,16 @@ const Patient = () => {
 
     const segListFromStore = useSelector((state) => state.allSegments.allSegments)
 
-    const [allclinicians, setallclinicians] = useState([])
-    useEffect(() => {
-        async function handleLoad() {
-            let token = JSON.parse(localStorage.getItem('clinicInfo')).token
-            let temp = await getClinicians(token)
-            setallclinicians(temp)
-        }
+    // const [allclinicians, setallclinicians] = useState([])
+    // useEffect(() => {
+    //     async function handleLoad() {
+    //         let token = JSON.parse(localStorage.getItem('clinicInfo')).token
+    //         let temp = await getClinicians(token)
+    //         setallclinicians(temp)
+    //     }
 
-        handleLoad()
-    }, [])
+    //     handleLoad()
+    // }, [])
 
     const [reportinput, setreportinput] = useState({
         doctor_info: {
@@ -100,44 +100,6 @@ const Patient = () => {
 
     }
 
-    const SelectClinician = () => {
-        const [clinician, setclinician] = useState(null)
-
-        return <div className='row'>
-            <div className='col-3'>
-                <h5>Select Operating Clinician</h5>
-                <Form.Select required
-                    onChange={(e) => {
-                        if (e.target.value >= 0) {
-                            setclinician(allclinicians[e.target.value])
-                            dispatch(setCurrentClinician(allclinicians[e.target.value]))
-                        } else {
-                            setclinician(null)
-                            dispatch(setCurrentClinician({}))
-                        }
-                    }}>
-                    <option value={-1}>Please select</option>
-                    {
-                        allclinicians.map((doctor, index) => {
-                            return <option key={index} value={index} >Dr. {doctor.name}</option>
-                        })
-                    }
-                </Form.Select>
-            </div>
-            <div className='col-9'>
-                {
-                    clinician !== null ? <div>
-                        <h5>Operating Clinician:</h5>
-                        <ClinicianVertical clinician={clinician} />
-                    </div> : <div className='bg-danger p-1 text-white text-center'>
-                        Selecting active clinician is mandatory
-                    </div>
-                }
-            </div>
-            <br />
-        </div>
-    }
-
     const BackToTop = () => {
         function scrollToTop() {
             window.scrollTo(0, 0)
@@ -150,13 +112,11 @@ const Patient = () => {
     return (<div>
         <div>
             <ClinicNavigation />
-            <Tabs defaultActiveKey="Workspace" id="uncontrolled-tab-example" className="mb-3">
+            <Tabs defaultActiveKey="Information" id="uncontrolled-tab-example" className="mb-3">
                 <Tab eventKey="Information" title="Information">
                     <PatientInfo></PatientInfo>
                 </Tab>
                 <Tab eventKey="Workspace" title="Workspace" className='container'>
-                    <SelectClinician />
-                    <br />
                     <AudioEditor />
                     <ReportViewControl />
                 </Tab>

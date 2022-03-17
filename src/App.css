@@ -94,6 +94,10 @@
       margin:3px
   }
 
+  .reload-icon:hover{
+    color: #4787e7;
+  }
+
   @media only screen and (max-width: 1000px){
     .back-to-top{
         bottom:20px;

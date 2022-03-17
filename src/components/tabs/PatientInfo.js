@@ -1,19 +1,20 @@
-import React, { useState, useRef,useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Tooltip, Overlay } from 'react-bootstrap'
 
 import PatientIcon from '../../assets/icons/patient.png'
 import HelpIcon from '../../assets/icons/help.png'
-import { useSearchParams,Link } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 
-import { getPatientById,getPatientHistory } from '../../services/ClinicDataAPI';
+import { getPatientById, getPatientHistory } from '../../services/ClinicDataAPI';
 
 import { useDispatch } from 'react-redux';
-import {setCurrentPatient} from '../../redux/actions/consultancyActions'
+import { setCurrentPatient } from '../../redux/actions/consultancyActions'
+import {IoReloadCircle} from 'react-icons/io5'
 
 const PatientInfo = () => {
     const dispatch = useDispatch()
 
-    let [searchParams,setSearchParams] =useSearchParams()
+    let [searchParams, setSearchParams] = useSearchParams()
 
     const [patient, setPatient] = useState({
     })
@@ -23,18 +24,20 @@ const PatientInfo = () => {
 
     const report = "https://storage.googleapis.com/be-project-4b4bf.appspot.com/reports/1644304931_93d573059e3c4fbd829585eadf78b541.pdf"
 
+
+    async function handleLoad() {
+        let id = searchParams.get('id')
+        let token = JSON.parse(localStorage.getItem('clinicInfo')).token
+        let patient = await getPatientById(id, token)
+        let history = await getPatientHistory(id, token)
+        setPatient(patient)
+        sethistory(history)
+        dispatch(setCurrentPatient(patient))
+    }
+
     useEffect(() => {
-        async function handleLoad(){
-            let id=searchParams.get('id')
-            let token = JSON.parse(localStorage.getItem('clinicInfo')).token
-            let patient=await getPatientById(id,token)
-            let history=await getPatientHistory(id,token)
-            setPatient(patient)
-            sethistory(history)
-            dispatch(setCurrentPatient(patient))
-        }
         handleLoad()
-    },[])
+    }, [])
 
     const severity = ['asymptomatic', 'moderate manifestation', 'major manifestation', 'catastrophic manifestation']
     const severitycode = ['#84ff00', '#fff222', '#ff5e00', '#ff0000']
@@ -45,7 +48,7 @@ const PatientInfo = () => {
     return <div className='container'>
         <div className='h4'><img className="m-1" src={PatientIcon} style={{ width: "40px" }} />Patient: {patient.name}</div>
         <div className="row">
-        <div className='col-lg-4 col-sm-6'>
+            <div className='col-lg-4 col-sm-6'>
                 <div className='d-flex'>Patient ID: <p className='text-primary'>{patient.patient_id}</p></div>
             </div>
             <div className='col-lg-4 col-sm-6'>
@@ -71,7 +74,7 @@ const PatientInfo = () => {
             </div>
         </div>
         <br />
-        <div className="h4">Patient History</div>
+        <div className="h4 d-flex">Patient History <IoReloadCircle className='m-1 reload-icon' onClick={()=>{handleLoad()}}/></div>
         <ul className="list-group">
             <li className="list-group-item active" aria-current="true">
                 <div className='row'>
