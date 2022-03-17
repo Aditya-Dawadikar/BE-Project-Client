@@ -9,12 +9,12 @@ import ClinicianVertical from '../../components/cards/Clinician Cards/ClinicianV
 
 import WaveIcon from '../../assets/icons/wave.png'
 
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { getClinicians } from '../../services/ClinicDataAPI'
 import { isAuthenticated } from '../../services/Auth'
 
-import {setCurrentClinician} from '../../redux/actions/consultancyActions'
+import { setCurrentClinician } from '../../redux/actions/consultancyActions'
 
 const Patient = () => {
     const dispatch = useDispatch()
@@ -112,15 +112,19 @@ const Patient = () => {
     return (<div>
         <div>
             <ClinicNavigation />
-            <Tabs defaultActiveKey="Information" id="uncontrolled-tab-example" className="mb-3">
-                <Tab eventKey="Information" title="Information">
-                    <PatientInfo></PatientInfo>
-                </Tab>
-                <Tab eventKey="Workspace" title="Workspace" className='container'>
-                    <AudioEditor />
-                    <ReportViewControl />
-                </Tab>
-            </Tabs>
+            <br/>
+            <div className='container'>
+                <Tabs defaultActiveKey="Information" id="uncontrolled-tab-example" className="mb-3">
+                    <Tab eventKey="Information" title="Information">
+                        <PatientInfo></PatientInfo>
+                    </Tab>
+                    <Tab eventKey="Workspace" title="Workspace" className='container'>
+                        <AudioEditor />
+                        <ReportViewControl />
+                    </Tab>
+                </Tabs>
+            </div>
+
         </div>
         <BackToTop />
     </div>

@@ -4,6 +4,7 @@ import { Form, Modal, Button } from 'react-bootstrap'
 import { addPatientAction } from '../../redux/actions/patientListActions'
 
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const AddPatient = (props) => {
     const dispatch = useDispatch();
@@ -34,6 +35,7 @@ const AddPatient = (props) => {
             patient_object.name= patient.firstname+" "+patient.lastname
             dispatch(addPatientAction(patient_object))
             setpatient(formDefault)
+            toast.success("added patient successfully!")
         }
     }
 

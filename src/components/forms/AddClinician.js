@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import {Modal, Button } from 'react-bootstrap'
 
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import { addClinicianAction } from '../../redux/actions/clinicianListActions'
 
 const AddClinician = (props) => {
@@ -29,6 +30,7 @@ const AddClinician = (props) => {
             let clinician_object = clinician
             clinician_object.name = clinician.firstname + " " + clinician.lastname
             dispatch(addClinicianAction(clinician))
+            toast.success("added clinician successfully!")
         }
     }
 
