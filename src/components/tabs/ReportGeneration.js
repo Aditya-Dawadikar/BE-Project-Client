@@ -69,7 +69,8 @@ const ReportGeneration = () => {
                 },
                 "audio_segments": [],
                 "report_note": note,
-                "symptoms": symptoms
+                "symptoms": symptoms,
+                "mode":"auto"
             }
 
             for (let i = 0; i < segListFromStore.length; i++) {
@@ -82,7 +83,9 @@ const ReportGeneration = () => {
                     "disorder": {
                         "classes": Object.keys(segListFromStore[i].analysis.disorder),
                         "probability": Object.values(segListFromStore[i].analysis.disorder)
-                    }
+                    },
+                    "symptoms": symptoms,
+                    "severity": currSeverity
                 }
                 requestBody.audio_segments.push(segmentObject)
             }
@@ -139,7 +142,7 @@ const ReportGeneration = () => {
             return true
         }
 
-        if(validateSymptoms()=== true && validateReportNote() === true && validateClinician()===true){
+        if (validateSymptoms() === true && validateReportNote() === true && validateClinician() === true) {
             return true
         }
 
