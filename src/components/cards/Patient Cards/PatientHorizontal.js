@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { deletePatientAction } from '../../../redux/actions/patientListActions'
 
+import { AiOutlineLink } from 'react-icons/ai'
+import {BsFillTrashFill} from 'react-icons/bs'
+
+
 const PatientHorizontal = (props) => {
 
     const dispatch = useDispatch()
@@ -26,8 +30,8 @@ const PatientHorizontal = (props) => {
             <div className="col text-primary">{props.patient.patient_id}</div>
             <div className="col">{props.patient.name}</div>
             <div className="col">
-                <div className='btn btn-success m-1'><Link className='text-white text-decoration-none' to={`/clinic/patient?id=${props.patient.patient_id}`}>Visit</Link></div>
-                <div className='btn btn-danger m-1' onClick={() => { deletePatient() }}>delete</div>
+                <div className='btn m-1'><Link className='text-decoration-none' to={`/clinic/patient?id=${props.patient.patient_id}`}><AiOutlineLink className='m-1'/>Visit</Link></div>
+                <div className='btn m-1' onClick={() => { deletePatient() }}><BsFillTrashFill className='m-1'/>Delete</div>
             </div>
         </div>
     )

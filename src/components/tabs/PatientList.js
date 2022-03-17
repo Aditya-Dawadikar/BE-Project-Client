@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux'
 import PatientHorizontal from '../../components/cards/Patient Cards/PatientHorizontal'
 import AddPatient from '../../components/forms/AddPatient'
 
+import {IoCaretBackSharp,IoCaretForwardSharp} from 'react-icons/io5'
+
 const PatientList = () => {
 
     const [patientList, setPatientList] = useState([])
@@ -49,15 +51,15 @@ const PatientList = () => {
         <div>
             <div className='row'>
                 <div className='col-lg-9 col-sm-6'>
-                    <div className='input-group m-1'>
+                    <div className='input-group m-1 standard-shadow'>
                         <input type='text' placeholder='find patients...' className="form-control"></input>
                         <button className='btn btn-primary'>Q</button>
                     </div>
                 </div>
                 <div className='col-lg-3 col-sm-6'>
-                    <Button variant="primary" className='m-1' onClick={() => setAddPatientModal(true)}>
-                        Add patient
-                    </Button>
+                    <div className='btn m-1 standard-shadow' onClick={() => setAddPatientModal(true)}>
+                        + Add patient
+                    </div>
                 </div>
             </div>
             <AddPatient
@@ -83,9 +85,11 @@ const PatientList = () => {
                         </ul>
                         <br />
                         <div className='d-flex justify-content-center'>
-                            <div className='btn btn-primary' onClick={() => { decrementPatient() }}>Prev</div>
-                            <p className='m-1'>{patientpage}</p>
-                            <div className='btn btn-primary' onClick={() => { incrementPatient() }}>Next</div>
+                            <div className='d-flex standard-shadow'>
+                                <div className='btn' onClick={() => { decrementPatient() }}><IoCaretBackSharp/></div>
+                                <p className='my-2'>{patientpage}</p>
+                                <div className='btn' onClick={() => { incrementPatient() }}><IoCaretForwardSharp/></div>
+                            </div>
                         </div>
                     </div> : <div>Nothing to show yet</div>
                 }

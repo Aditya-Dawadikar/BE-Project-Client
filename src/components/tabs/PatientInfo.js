@@ -10,6 +10,7 @@ import { getPatientById, getPatientHistory } from '../../services/ClinicDataAPI'
 import { useDispatch } from 'react-redux';
 import { setCurrentPatient } from '../../redux/actions/consultancyActions'
 import {IoReloadCircle} from 'react-icons/io5'
+import {AiOutlineLink} from 'react-icons/ai'
 
 const PatientInfo = () => {
     const dispatch = useDispatch()
@@ -117,8 +118,8 @@ const PatientInfo = () => {
                             <div className='col'>{entry.diagnosis}</div>
                             <div className='col'><div className='btn m-1' style={{ 'background': severitycode[severity.indexOf(entry.severity)] }}></div>{entry.severity}</div>
                             <div className='col'>{
-                                // entry.report ? <div className="btn btn-success"><a href={entry.report} target='_blank' className='text-white text-decoration-none'>Report</a></div> : "Nothing to show"
-                                entry.report ? <div className="btn btn-success"><a href={report} target='_blank' className='text-white text-decoration-none'>Report</a></div> : "Nothing to show"
+                                entry.report ? <div className="btn"><a href={entry.report} target='_blank' className='text-decoration-none'><AiOutlineLink className='m-1'/>Report</a></div> : "Nothing to show"
+                                // entry.report ? <div className="btn btn-success"><a href={report} target='_blank' className='text-white text-decoration-none'>Report</a></div> : "Nothing to show"
                             }</div>
                         </div>
                     </li>

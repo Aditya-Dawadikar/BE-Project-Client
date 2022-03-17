@@ -115,6 +115,40 @@ export const getPatientHistory = async (id, token) => {
     })
 }
 
+export const getClinicianHistory = async (id, token) => {
+    let url = base_url + `api/history/doctor/${id}`
+    let config = {
+        headers: { Authorization: `Bearer ${token}` }
+    }
+    return new Promise((resolve, reject) => {
+        axios.get(url, config).then(res => {
+            if (res["data"] && res['data']) {
+                if (res['data']['rows'].length > 0) {
+                    let required_array = []
+
+                    res['data']['rows'].map((record) => {
+                        let required_object = {}
+                        required_object["patient_id"] = record.patient_id
+                        required_object["patient_name"] = record.patientDetails.name
+                        required_object["diagnosis"] = record.diagnosis
+                        required_object["severity"] = record.severity
+                        required_object["date"] = record.date
+                        required_array.push(required_object)
+                    })
+
+                    resolve(required_array)
+                } else {
+                    resolve([])
+                }
+            } else {
+                throw (new Error("no data received"))
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+    })
+}
+
 export const addPatient=async(patient,token)=>{
     let url = base_url + `api/patients`
     let body = patient

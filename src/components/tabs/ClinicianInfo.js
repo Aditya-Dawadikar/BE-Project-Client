@@ -5,10 +5,13 @@ import ClinicianIcon from '../../assets/icons/doctor.png'
 import HelpIcon from '../../assets/icons/help.png'
 import { useSearchParams } from 'react-router-dom';
 
-import { getClinicianById } from '../../services/ClinicDataAPI';
+import { getClinicianById, getClinicianHistory } from '../../services/ClinicDataAPI';
 
 import { useDispatch } from 'react-redux';
-import {setCurrentClinician} from '../../redux/actions/consultancyActions'
+import { setCurrentClinician } from '../../redux/actions/consultancyActions'
+
+import {IoReloadCircle} from 'react-icons/io5'
+import {AiOutlineLink} from 'react-icons/ai'
 
 const ClinicianInfo = () => {
     const dispatch = useDispatch()
@@ -20,16 +23,19 @@ const ClinicianInfo = () => {
 
     const [patients, setpatients] = useState([])
 
+    async function handleLoad() {
+        let id = searchParams.get('id')
+        let token = JSON.parse(localStorage.getItem('clinicInfo')).token
+        let clinician = await getClinicianById(id, token)
+        let history = await getClinicianHistory(id, token)
+        setClinician(clinician)
+        setpatients(history)
+        dispatch(setCurrentClinician(clinician))
+    }
+
     useEffect(() => {
-        async function handleLoad(){
-            let id=searchParams.get('id')
-            let token = JSON.parse(localStorage.getItem('clinicInfo')).token
-            let clinician=await getClinicianById(id,token)
-            setClinician(clinician)
-            dispatch(setCurrentClinician(clinician))
-        }
         handleLoad()
-    },[])
+    }, [])
 
     const severity = ['asymptomatic', 'moderate manifestation', 'major manifestation', 'catastrophic manifestation']
     const severitycode = ['#84ff00', '#fff222', '#ff5e00', '#ff0000']
@@ -50,10 +56,11 @@ const ClinicianInfo = () => {
         </div>
         <div style={{ width: "100%", height: "2px", "--bs-bg-opacity": ".2" }} className="bg-secondary m-1"></div>
         <br /><br />
-        <div className="h4">Diagnosed Patients</div>
+        <div className="h4 d-flex">Diagnosed Patients <IoReloadCircle className='m-1 reload-icon' onClick={() => { handleLoad() }} /></div>
         <ul className="list-group">
             <li className="list-group-item active" aria-current="true">
                 <div className='row'>
+                    <div className='col'>Date</div>
                     <div className='col'>Patient Id</div>
                     <div className='col'>Name</div>
                     <div className='col'>Diagnosis</div>
@@ -86,11 +93,12 @@ const ClinicianInfo = () => {
                 patients.map((entry, index) => {
                     return <li key={index} className="list-group-item">
                         <div className='row'>
+                            <div className='col'>{entry.date}</div>
                             <div className='col'>{entry.patient_id}</div>
                             <div className='col'>{entry.patient_name}</div>
                             <div className='col'>{entry.diagnosis}</div>
-                            <div className='col'><div className='btn m-1' style={{ 'background': severitycode[entry.severity] }}></div>{severity[entry.severity]}</div>
-                            <div className='col'><div className='btn btn-success' onClick={() => { window.location.href = '/clinic/patient' }}>visit profile</div></div>
+                            <div className='col'><div className='btn m-1' style={{ 'background': severitycode[severity.indexOf(entry.severity)] }}></div>{entry.severity}</div>
+                            <div className='col'><div className='btn m-1 text-primary' onClick={() => { window.location.href = `/clinic/patient?id=${entry.patient_id}` }}><AiOutlineLink className='m-1'/>Visit</div></div>
                         </div>
                     </li>
                 })

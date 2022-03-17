@@ -1,15 +1,18 @@
 import React from 'react'
 import {Navbar,Container,Nav,Button} from 'react-bootstrap'
 
-import HomeIcon from '../../assets/icons/home.png'
-import AccountIcon from '../../assets/icons/account.png'
-import HelpIcon from '../../assets/icons/help.png'
+import {AiFillHome} from 'react-icons/ai'
+import {MdHelp} from 'react-icons/md'
+import { useNavigate } from 'react-router-dom'
 
 const ClinicNavigation = () => {
 
+    const navigate = useNavigate()
+
     function logoutHandler(){
         localStorage.clear()
-        window.location.href='http://localhost:3000/clinic'
+        // window.location.href='http://localhost:3000/clinic'
+        navigate('/clinic')
     }
 
     return (
@@ -20,9 +23,8 @@ const ClinicNavigation = () => {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                    <Nav.Link href="/clinic/landing"><img style={{width:"20px",margin:"0px 5px 0px 0px"}} src={HomeIcon}/>Home</Nav.Link>
-                    {/* <Nav.Link href="/clinic/account"><img style={{width:"20px",margin:"0px 5px 0px 0px"}} src={AccountIcon}/>Account</Nav.Link> */}
-                    <Nav.Link href="/clinic/help"><img style={{width:"20px",margin:"0px 5px 0px 0px"}} src={HelpIcon}/>Help</Nav.Link>
+                    <Nav.Link href="/clinic/landing"><AiFillHome className='text-white m-1' />Home</Nav.Link>
+                    <Nav.Link href="/clinic/help"><MdHelp className='text-white m-1' />Help</Nav.Link>
                     </Nav>
                     <Nav>
                     <div className="text-center" style={{"width":"6em","height":"auto","borderRadius":"20px","background":"white","color":"black"}}> 

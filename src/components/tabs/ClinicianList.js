@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-import { Button } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
 import ClinicianHorizontal from '../cards/Clinician Cards/ClinicianHorizontal'
 import AddClinician from '../forms/AddClinician'
+
+import {IoCaretBackSharp,IoCaretForwardSharp} from 'react-icons/io5'
 
 const ClinicianList = () => {
 
@@ -52,15 +53,15 @@ const ClinicianList = () => {
     <div>
       <div className='row'>
         <div className='col-lg-9 col-sm-6'>
-          <div className='input-group m-1'>
+          <div className='input-group m-1 standard-shadow'>
             <input type='text' placeholder='find clinicians' className="form-control"></input>
             <button className='btn btn-primary'>Q</button>
           </div>
         </div>
         <div className='col-lg-3 col-sm-6'>
-          <Button variant="primary" className='m-1' onClick={() => setAddClinicianModal(true)}>
-            Add Clinician
-          </Button>
+          <div className='btn m-1 standard-shadow' onClick={() => setAddClinicianModal(true)}>
+            + Add Clinician
+          </div>
         </div>
       </div>
       <AddClinician
@@ -86,9 +87,11 @@ const ClinicianList = () => {
             </ul>
             <br />
             <div className='d-flex justify-content-center'>
-              <div className='btn btn-primary' onClick={() => { decrementClinician() }}>Prev</div>
-              <p className='m-1'>{clinicianpage}</p>
-              <div className='btn btn-primary' onClick={() => { incrementClinician() }}>Next</div>
+              <div className='d-flex standard-shadow'>
+                <div className='btn' onClick={() => { decrementClinician() }}><IoCaretBackSharp /></div>
+                <p className='my-2'>{clinicianpage}</p>
+                <div className='btn' onClick={() => { incrementClinician() }}><IoCaretForwardSharp /></div>
+              </div>
             </div>
           </div> : <div>Nothing to show yet</div>
         }
