@@ -114,7 +114,7 @@ const Patient = () => {
             <ClinicNavigation />
             <br/>
             <div className='container'>
-                <Tabs defaultActiveKey="Workspace" id="uncontrolled-tab-example" className="mb-3">
+                <Tabs defaultActiveKey="Information" id="uncontrolled-tab-example" className="mb-3">
                     <Tab eventKey="Information" title="Information">
                         <PatientInfo></PatientInfo>
                     </Tab>

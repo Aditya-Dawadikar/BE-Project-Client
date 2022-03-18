@@ -1,13 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from 'react-bootstrap'
+import { Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
 import PatientHorizontal from '../../components/cards/Patient Cards/PatientHorizontal'
 import AddPatient from '../../components/forms/AddPatient'
 
-import {IoCaretBackSharp,IoCaretForwardSharp} from 'react-icons/io5'
+import { IoCaretBackSharp, IoCaretForwardSharp } from 'react-icons/io5'
+import { AiOutlineLink } from 'react-icons/ai'
+import { BsFillTrashFill } from 'react-icons/bs'
+import { ImSearch } from 'react-icons/im'
+import { GrFormAdd } from 'react-icons/gr'
+
+import { useDispatch } from 'react-redux'
+import { deletePatientAction } from '../../redux/actions/patientListActions'
+
+import { Link } from 'react-router-dom'
 
 const PatientList = () => {
+    const dispatch = useDispatch()
 
     const [patientList, setPatientList] = useState([])
     const [temppatientlist, settemppatientlist] = useState([])
@@ -47,18 +57,25 @@ const PatientList = () => {
 
     }, [patientcurrentindex, patientList])
 
+    const deletePatient = (patient) => {
+        var result = window.confirm("Are you sure, you want to delete?");
+        if (result) {
+            dispatch(deletePatientAction(patient))
+        }
+    }
+
     return (
         <div>
             <div className='row'>
                 <div className='col-lg-9 col-sm-6'>
-                    <div className='input-group m-1 standard-shadow'>
+                    <div className='input-group m-1'>
                         <input type='text' placeholder='find patients...' className="form-control"></input>
-                        <button className='btn btn-primary'>Q</button>
+                        <button className='btn bg-dark text-white'><ImSearch /></button>
                     </div>
                 </div>
                 <div className='col-lg-3 col-sm-6'>
-                    <div className='btn m-1 standard-shadow' onClick={() => setAddPatientModal(true)}>
-                        + Add patient
+                    <div className='btn m-1 std-border' onClick={() => setAddPatientModal(true)}>
+                        <GrFormAdd /> Add patient
                     </div>
                 </div>
             </div>
@@ -70,25 +87,39 @@ const PatientList = () => {
             <div>
                 {
                     patientList.length > 0 ? <div>
-                        <ul className='list-group container-fluid'>
-                            <li className='list-group-item active'>
-                                <div className='row'>
-                                    {/* <div className="col">Avatar</div> */}
-                                    <div className="col">ID</div>
-                                    <div className="col">Patient Name</div>
-                                    <div className="col">Action</div>
-                                </div>
-                            </li>
-                            {temppatientlist.map((patient, index) => {
-                                return <li className='list-group-item' key={index}><PatientHorizontal patient={patient} /></li>
-                            })}
-                        </ul>
+                        <Table responsive>
+                            <thead>
+                                <tr>
+                                    <th>Patient Id</th>
+                                    <th>Patient Name</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {temppatientlist.map((patient, index) => {
+                                    return <tr>
+                                        <td>
+                                            <Link className='text-decoration-none' to={`/clinic/patient?id=${patient.patient_id}`}>
+                                                <AiOutlineLink className='m-1' />
+                                                {patient.patient_id}
+                                            </Link>
+                                        </td>
+                                        <td>{patient.name}</td>
+                                        <td>
+                                            <div className='btn m-1' onClick={() => { deletePatient(patient) }}>
+                                                <BsFillTrashFill className='m-1' />Delete
+                                            </div>
+                                        </td>
+                                    </tr>
+                                })}
+                            </tbody>
+                        </Table>
                         <br />
                         <div className='d-flex justify-content-center'>
-                            <div className='d-flex standard-shadow'>
-                                <div className='btn' onClick={() => { decrementPatient() }}><IoCaretBackSharp/></div>
-                                <p className='my-2'>{patientpage}</p>
-                                <div className='btn' onClick={() => { incrementPatient() }}><IoCaretForwardSharp/></div>
+                            <div className='d-flex'>
+                                <div className='btn' onClick={() => { decrementPatient() }}><IoCaretBackSharp /></div>
+                                <b className='my-2'>Showing Patients {patientpage}</b>
+                                <div className='btn' onClick={() => { incrementPatient() }}><IoCaretForwardSharp /></div>
                             </div>
                         </div>
                     </div> : <div>Nothing to show yet</div>
