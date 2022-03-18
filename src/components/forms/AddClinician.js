@@ -40,23 +40,23 @@ const AddClinician = (props) => {
         const phoneRegex = /^[0-9]{10}$/
 
         if (!nameRegex.test(clinician.firstname) || clinician.firstname === "") {
-            alert("firstname is invalid")
+            toast.error("firstname is invalid")
             return false
         }
         else if (!nameRegex.test(clinician.lastname) || clinician.lastname === "") {
-            alert("lastname is invalid")
+            toast.error("lastname is invalid")
             return false
         }
         else if (!phoneRegex.test(clinician.phone) || clinician.phone === "") {
-            alert("phone number is invalid")
+            toast.error("phone number is invalid")
             return false
         }
         else if (!emailRegex.test(clinician.email) || clinician.email === "") {
-            alert("email is invalid")
+            toast.error("email is invalid")
             return false
         }
         else if (clinician.qualification === '') {
-            alert("adding qualification is mandatory")
+            toast.error("adding qualification is mandatory")
             return false
         } else {
             return true
@@ -104,8 +104,8 @@ const AddClinician = (props) => {
             </form>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="success" onClick={() => { addNewClinician() }}>Save</Button>
-            <Button onClick={props.onHide}>Close</Button>
+            <div className='btn std-border m-1' onClick={() => { addNewClinician() }}>Save</div>
+            <div className='btn std-border m-1' onClick={props.onHide}>Close</div>
         </Modal.Footer>
     </Modal>
 }

@@ -287,9 +287,9 @@ const ReportGeneration = () => {
             </div>
             {
                 isReport !== "" ?
-                    <div className='btn btn-primary'>
-                        <a className='text-white' href={isReport} target="_blank">Click here for Report Link</a>
-                    </div> : <div className='btn btn-success' onClick={() => { handleSubmit() }}>Generate Report</div>
+                    <div className=''>
+                        <a className='btn std-border text-decoration-none' href={isReport} target="_blank">Click here for Report Link</a>
+                    </div> : <div className='btn std-border' onClick={() => { handleSubmit() }}>Generate Report</div>
             }
 
             <div style={{ height: "500px" }}></div>

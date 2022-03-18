@@ -9,7 +9,7 @@ import { IoCaretBackSharp, IoCaretForwardSharp } from 'react-icons/io5'
 import { AiOutlineLink } from 'react-icons/ai'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { ImSearch } from 'react-icons/im'
-import { GrFormAdd } from 'react-icons/gr'
+import { IoAdd } from 'react-icons/io5'
 
 import { useDispatch } from 'react-redux'
 import { deletePatientAction } from '../../redux/actions/patientListActions'
@@ -75,7 +75,7 @@ const PatientList = () => {
                 </div>
                 <div className='col-lg-3 col-sm-6'>
                     <div className='btn m-1 std-border' onClick={() => setAddPatientModal(true)}>
-                        <GrFormAdd /> Add patient
+                        <IoAdd /> Add patient
                     </div>
                 </div>
             </div>

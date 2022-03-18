@@ -5,7 +5,7 @@ import DataVisualizer from './DataVisualizer';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { updateSegmentAction } from '../../redux/actions/audioEditorActions'
-import {computeDiagnosisSummary} from '../../redux/actions/diagnosisAction'
+import { computeDiagnosisSummary } from '../../redux/actions/diagnosisAction'
 
 import { toast } from 'react-toastify'
 
@@ -88,7 +88,7 @@ const DataContainer = ({ segid }) => {
 
     return <div className='row'>
         <div className='col'>
-            <p className='font-weight-bold'>Summary</p>
+            <b className='h4'>Summary</b>
             {
                 isFetched === true ? <ul className='list-group'>
                     <li className='list-group-item'>
@@ -117,7 +117,7 @@ const DataContainer = ({ segid }) => {
                                 <b>Disorder :</b>
                             </div>
                             <div className='col'>
-                                {segListFromStore[segid].analysis.summary.disorder|| ""}
+                                {segListFromStore[segid].analysis.summary.disorder || ""}
                             </div>
                         </div>
                     </li>
@@ -128,7 +128,7 @@ const DataContainer = ({ segid }) => {
             <DataVisualizer index={segid} />
         </div> */}
         <div className='col'>
-            <p className='font-weight-bold'>Disorder Analysis</p>
+            <b className='h4'>Disorder Analysis</b>
             {
                 isFetched === true ? <ul className='list-group'>
                     {
@@ -149,7 +149,7 @@ const DataContainer = ({ segid }) => {
             }
         </div>
         <div className='col'>
-            <p className='font-weight-bold'>Abnormality Analysis</p>
+            <b className='h4'>Abnormality Analysis</b>
             {
                 isFetched === true ? <ul className='list-group'>
                     {

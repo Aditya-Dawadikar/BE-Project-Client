@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { getClinicians } from '../../services/ClinicDataAPI'
 import { isAuthenticated } from '../../services/Auth'
+import {BsFillArrowUpCircleFill,BsSoundwave} from 'react-icons/bs'
 
 import { setCurrentClinician } from '../../redux/actions/consultancyActions'
 
@@ -22,17 +23,6 @@ const Patient = () => {
     isAuthenticated()
 
     const segListFromStore = useSelector((state) => state.allSegments.allSegments)
-
-    // const [allclinicians, setallclinicians] = useState([])
-    // useEffect(() => {
-    //     async function handleLoad() {
-    //         let token = JSON.parse(localStorage.getItem('clinicInfo')).token
-    //         let temp = await getClinicians(token)
-    //         setallclinicians(temp)
-    //     }
-
-    //     handleLoad()
-    // }, [])
 
     const [reportinput, setreportinput] = useState({
         doctor_info: {
@@ -82,12 +72,12 @@ const Patient = () => {
     const ReportViewControl = () => {
         return <div>
             <button
-                className={segListFromStore.length > 0 ? 'btn btn-primary' : 'btn btn-secondary'}
+                className={segListFromStore.length > 0 ? 'btn std-border' : 'btn btn-secondary std-border'}
                 onClick={() => {
                     setshowreport(!showreport)
                     // window.scrollTo(0,1000)
                 }}>
-                <img src={WaveIcon} className='m-1' style={{ width: "20px" }} />
+                <BsSoundwave className='m-1' />
                 Analyse
             </button>
             <br /><br />
@@ -104,8 +94,8 @@ const Patient = () => {
         function scrollToTop() {
             window.scrollTo(0, 0)
         }
-        return <div className='btn btn-primary back-to-top standard-shadow' onClick={() => { scrollToTop() }}>
-            <img src="https://img.icons8.com/external-those-icons-fill-those-icons/24/FFFFFF/external-up-arrows-those-icons-fill-those-icons-1.png" />
+        return <div className='btn std-border back-to-top standard-shadow' onClick={() => { scrollToTop() }}>
+            <BsFillArrowUpCircleFill />
         </div>
     }
 

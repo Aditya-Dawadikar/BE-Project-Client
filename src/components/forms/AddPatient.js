@@ -45,35 +45,35 @@ const AddPatient = (props) => {
         const phoneRegex = /^[0-9]{10}$/
 
         if (!nameRegex.test(patient.firstname) || patient.firstname ==="") {
-            alert("firstname is invalid")
+            toast.error("firstname is invalid")
             return false
         }
         else if (!nameRegex.test(patient.lastname) || patient.lastname ==="") {
-            alert("lastname is invalid")
+            toast.error("lastname is invalid")
             return false
         }
         else if (!phoneRegex.test(patient.phone) || patient.phone === "") {
-            alert("phone number is invalid")
+            toast.error("phone number is invalid")
             return false
         }
         else if (!emailRegex.test(patient.email) || patient.email === "") {
-            alert("email is invalid")
+            toast.error("email is invalid")
             return false
         }
         else if (patient.age === '') {
-            alert("age is mandatory")
+            toast.error("age is mandatory")
             return false
         }
         else if (patient.weight === '') {
-            alert("weight is mandatory")
+            toast.error("weight is mandatory")
             return false
         }
         else if (patient.gender === '') {
-            alert("gender is mandatory")
+            toast.error("gender is mandatory")
             return false
         }
         else if (patient.bloodgroup === '') {
-            alert("bloodgroup is mandatory")
+            toast.error("bloodgroup is mandatory")
             return false
         } else {
             return true
@@ -122,7 +122,7 @@ const AddPatient = (props) => {
 
                     <div className='col-lg-3 col-md-3 col-sm-6'>
                         <label className="form-label">Gender</label>
-                        <Form.Select aria-label="Default select example"
+                        <Form.Select className='form-control'  aria-label="Default select example"
                             value={patient.gender} name="gender"
                             onChange={(e) => { handlePatientFormOnChange(e) }}>
                             {
@@ -135,7 +135,7 @@ const AddPatient = (props) => {
 
                     <div className='col-lg-3 col-md-3 col-sm-6'>
                         <label className="form-label">Blood Group</label>
-                        <Form.Select aria-label="Default select example"
+                        <Form.Select className='form-control' aria-label="Default select example"
                             value={patient.bloodgroup} name="bloodgroup"
                             onChange={(e) => { handlePatientFormOnChange(e) }}>
                             {
@@ -154,8 +154,8 @@ const AddPatient = (props) => {
             </form>
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="success" onClick={() => { addNewPatient() }}>Save</Button>
-            <Button onClick={props.onHide}>Close</Button>
+            <div className='btn std-border m-1' onClick={() => { addNewPatient() }}>Save</div>
+            <div className='btn std-border m-1' onClick={props.onHide}>Close</div>
         </Modal.Footer>
     </Modal>
 }

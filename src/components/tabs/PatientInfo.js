@@ -97,7 +97,7 @@ const PatientInfo = () => {
                                 <div className='btn m-1' style={{ 'background': severitycode[severity.indexOf(entry.severity)] }}></div>
                                 {entry.severity}</td>
                             <td>{
-                                entry.report ? <div className="btn"><a href={entry.report} target='_blank' className='text-decoration-none'><AiOutlineLink className='m-1' />Report</a></div> : "Nothing to show"
+                                entry.report ? <a href={entry.report} target='_blank' className='text-decoration-none'><AiOutlineLink className='m-1' />Report</a> : "Nothing to show"
                             }</td>
                         </tr>
                     })

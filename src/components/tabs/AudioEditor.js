@@ -1,23 +1,25 @@
-import React, { useState, useEffect, useRef} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
-import {v4 as uuid} from 'uuid'
+import { v4 as uuid } from 'uuid'
 
 import PlayIcon from '../../assets/icons/play.png'
 import PauseIcon from '../../assets/icons/pause.png'
 import CropIcon from '../../assets/icons/crop.png'
 import TrashIcon from '../../assets/icons/delete.png'
 
-import { useDispatch,useSelector } from 'react-redux'
-import {addSegmentAction,deleteSegmentAction} from '../../redux/actions/audioEditorActions'
+import { BsPauseFill, BsPlayFill, BsScissors,BsFillTrashFill } from 'react-icons/bs'
+
+import { useDispatch, useSelector } from 'react-redux'
+import { addSegmentAction, deleteSegmentAction } from '../../redux/actions/audioEditorActions'
 
 const AudioEditor = () => {
     const dispatch = useDispatch()
-    const segListFromStore = useSelector((state)=>state.allSegments.allSegments)
+    const segListFromStore = useSelector((state) => state.allSegments.allSegments)
 
-    useEffect(()=>{
+    useEffect(() => {
         setSeglist(segListFromStore)
-    },[segListFromStore])
+    }, [segListFromStore])
 
     const canvasRef = useRef(null)
     const [canvasWidth, setcanvaswidth] = useState(1000)
@@ -198,9 +200,9 @@ const AudioEditor = () => {
                 name: uuid(),
                 samplingrate: samplingrate,
                 analysis: {
-                    summary:{
-                        abnormality:"",
-                        disorder:""
+                    summary: {
+                        abnormality: "",
+                        disorder: ""
                     },
                     abnormality: {
                         crackles: 0,
@@ -210,17 +212,17 @@ const AudioEditor = () => {
                     disorder: {
                         asthma: 0,
                         bronchiectasis: 0,
-                        bronchiolitis:0,
+                        bronchiolitis: 0,
                         fibrosis: 0,
                         healthy: 0,
                         pneumonia: 0,
                     },
                     severity: 0
                 },
-                manual:{
-                    abnormality:"",
-                    disorder:"",
-                    severity:""
+                manual: {
+                    abnormality: "",
+                    disorder: "",
+                    severity: ""
                 },
                 isAnalysed: false
             }
@@ -232,8 +234,8 @@ const AudioEditor = () => {
     }
 
     const deleteSegment = (index) => {
-        setSeglist(seglist.filter((seg,id)=>{
-            return id!=index
+        setSeglist(seglist.filter((seg, id) => {
+            return id != index
         }))
 
         // deleting segment from store
@@ -251,118 +253,119 @@ const AudioEditor = () => {
     return (
         <div>
             <div className='d-flex'>
-            <div className='m-2' style={{ width: canvasWidth+"px"}}>
-                <div className='d-flex'>
-                    <input className='form-control' type='file' onChange={(e) => openFile(e)}></input>
-                </div>
-                <br />
-                <div>
-                    {/* visualizer */}
-                    <input
-                        type='range'
-                        id="range-1"
-                        min={0}
-                        max={canvasWidth}
-                        style={{ width: canvasWidth + "px" }}
-                        className="cutter-slider"
-                        value={endpoints.start}
-                        onChange={(e) => {
-                            if (e.target.value < (canvasWidth - endpoints.end)) {
-                                setendpoints({ start: e.target.value, end: endpoints.end })
-                            } else {
-                                setendpoints({ start: canvasWidth - endpoints.end, end: endpoints.end })
-                            }
-                        }}
-                    ></input>
-                    <input
-                        type='range'
-                        id="range-2"
-                        min={0}
-                        max={canvasWidth}
-                        style={{ width: canvasWidth + "px" }}
-                        className="cutter-slider"
-                        value={endpoints.end}
-                        onChange={(e) => {
-                            if (e.target.value < (canvasWidth - endpoints.start)) {
-                                setendpoints({ start: endpoints.start, end: e.target.value })
-                            } else {
-                                setendpoints({ start: endpoints.start, end: canvasWidth - endpoints.start })
-                            }
-                        }}
-                    ></input>
-                </div>
-                <canvas
-                    style={{ border: "solid 1px black" }}
-                    ref={canvasRef}
-                    width={canvasWidth + "px"}
-                    height={"200px"}
-                >
-                </canvas>
-                <div>
-                    {/* player */}
-                    <input
-                        className="audio-progress"
-                        style={{ width: canvasWidth + "px" }}
-                        type='range'
-                        min={0}
-                        max={canvasWidth}
-                        value={instance}
-                    />
-                    <div className='d-flex justify-content-center align-items-center'>
-                        00:00/00:00
+                <div className='m-2' style={{ width: canvasWidth + "px" }}>
+                    <div className='d-flex'>
+                        <input className='btn' type='file' onChange={(e) => openFile(e)}></input>
                     </div>
-                    <div className='d-flex justify-content-center align-items-center'>
-                        <button className='btn btn-primary mx-2' onClick={pauseAudio}><img src={PauseIcon} className='m-1' style={{ width: "20px" }} />Pause</button>
-                        <button className='btn btn-primary mx-2' onClick={playAudio}><img src={PlayIcon} className='m-1' style={{ width: "20px" }} />Play</button>
-                        <button className={signaldata.length === 0 ? 'btn btn-secondary' : 'btn btn-primary'} onClick={() => { trimAudio() }}><img src={CropIcon} className='m-1' style={{ width: "20px" }} />Trim</button>
-                    </div>
-                </div>
-            </div>
-            <div className='m-2'>
-                {/* we will add all the controls here */}
-                Scale signal for Better visualization
-                <div className="d-flex">
-                    <div className="m-2">100</div>
-                    <OverlayTrigger
-                        placement={'top'}
-                        overlay={
-                            <Tooltip>
-                                <strong>Scaled to {scalingfactor}</strong>
-                            </Tooltip>
-                        }>
+                    <br />
+                    <div>
+                        {/* visualizer */}
                         <input
                             type='range'
-                            min={100}
-                            max={100000}
+                            id="range-1"
+                            min={0}
+                            max={canvasWidth}
+                            style={{ width: canvasWidth + "px" }}
+                            className="cutter-slider"
+                            value={endpoints.start}
                             onChange={(e) => {
-                                setscalingfactor(e.target.value)
+                                if (e.target.value < (canvasWidth - endpoints.end)) {
+                                    setendpoints({ start: e.target.value, end: endpoints.end })
+                                } else {
+                                    setendpoints({ start: canvasWidth - endpoints.end, end: endpoints.end })
+                                }
                             }}
                         ></input>
+                        <input
+                            type='range'
+                            id="range-2"
+                            min={0}
+                            max={canvasWidth}
+                            style={{ width: canvasWidth + "px" }}
+                            className="cutter-slider"
+                            value={endpoints.end}
+                            onChange={(e) => {
+                                if (e.target.value < (canvasWidth - endpoints.start)) {
+                                    setendpoints({ start: endpoints.start, end: e.target.value })
+                                } else {
+                                    setendpoints({ start: endpoints.start, end: canvasWidth - endpoints.start })
+                                }
+                            }}
+                        ></input>
+                    </div>
+                    <canvas
+                        style={{ border: "solid 1px black" }}
+                        ref={canvasRef}
+                        width={canvasWidth + "px"}
+                        height={"200px"}
+                    >
+                    </canvas>
+                    <div>
+                        {/* player */}
+                        <input
+                            className="audio-progress"
+                            style={{ width: canvasWidth + "px" }}
+                            type='range'
+                            min={0}
+                            max={canvasWidth}
+                            value={instance}
+                        />
+                        <div className='d-flex justify-content-center align-items-center'>
+                            00:00/00:00
+                        </div>
+                        <div className='d-flex justify-content-center align-items-center'>
+                            <button className='btn std-border mx-2' onClick={pauseAudio}><BsPauseFill />Pause</button>
+                            <button className='btn std-border mx-2' onClick={playAudio}><BsPlayFill />Play</button>
+                            <button className={signaldata.length === 0 ? 'btn btn-secondary std-border mx-2' : 'btn std-border mx-2'} onClick={() => { trimAudio() }}><BsScissors />Trim</button>
+                        </div>
+                    </div>
+                </div>
+                <div className='m-2'>
+                    {/* we will add all the controls here */}
+                    Scale signal for Better visualization
+                    <div className="d-flex">
+                        <div className="m-2">100</div>
+                        <OverlayTrigger
+                            placement={'top'}
+                            overlay={
+                                <Tooltip>
+                                    <strong>Scaled to {scalingfactor}</strong>
+                                </Tooltip>
+                            }>
+                            <input
+                                type='range'
+                                min={100}
+                                max={100000}
+                                onChange={(e) => {
+                                    setscalingfactor(e.target.value)
+                                }}
+                            ></input>
 
-                    </OverlayTrigger>
-                    <div className="m-2">100000</div>
-                </div>
-                <div>
-                    <li className="list-group-item active" aria-current="true">Audio Segments</li>
-                    <ul className='list-group' id='seglist'>
-                        {
-                            seglist.length < 1 ? <div>No segments to show yet</div> : seglist.map((segment, index) => {
-                                return <li key={index} className="list-group-item"> {segment.name}
-                                    <button
-                                        className='btn btn-primary mx-2' style={{ height: "20px", width: "20px" }}
-                                        onClick={() => { playFromList(index) }}>
-                                        <img src={PlayIcon} style={{ width: "15px", position: "relative", top: "-11px", left: "-7px" }} />
-                                    </button>
-                                    <button
-                                        className='btn btn-danger mx-2' style={{ height: "20px", width: "20px" }}
-                                        onClick={() => { deleteSegment(index) }}>
-                                        <img src={TrashIcon} style={{ width: "15px", position: "relative", top: "-11px", left: "-7px" }} />
-                                    </button>
-                                </li>
-                            })
-                        }
-                    </ul>
-                </div>
+                        </OverlayTrigger>
+                        <div className="m-2">100000</div>
+                    </div>
+                    <div>
+                        <li className="list-group-item bg-dark text-white" aria-current="true">Audio Segments</li>
+                        <ul className='list-group' id='seglist'>
+                            {
+                                seglist.length < 1 ? <div>No segments to show yet</div> : seglist.map((segment, index) => {
+                                    return <li key={index} className="list-group-item"> {segment.name}
+                                        <br />
+                                        <button
+                                            className='btn std-border mx-1'
+                                            onClick={() => { playFromList(index) }}>
+                                            <BsPlayFill /> Play
+                                        </button>
+                                        <button
+                                            className='btn std-border mx-1'
+                                            onClick={() => { deleteSegment(index) }}>
+                                            <BsFillTrashFill />delete
+                                        </button>
+                                    </li>
+                                })
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

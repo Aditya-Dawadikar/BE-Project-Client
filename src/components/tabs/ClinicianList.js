@@ -14,7 +14,7 @@ import { deleteClinicianAction } from '../../redux/actions/clinicianListActions'
 import { Link } from 'react-router-dom'
 import { Table } from 'react-bootstrap'
 import { ImSearch } from 'react-icons/im'
-import { GrFormAdd } from 'react-icons/gr'
+import { IoAdd } from 'react-icons/io5'
 
 const ClinicianList = () => {
   const dispatch = useDispatch()
@@ -77,7 +77,7 @@ const ClinicianList = () => {
         </div>
         <div className='col-lg-3 col-sm-6'>
           <div className='btn m-1 std-border' onClick={() => setAddClinicianModal(true)}>
-            <GrFormAdd /> Add Clinician
+            <IoAdd /> Add Clinician
           </div>
         </div>
       </div>
