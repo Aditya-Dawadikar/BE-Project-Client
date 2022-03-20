@@ -15,17 +15,18 @@ import { Link } from 'react-router-dom'
 import { Table } from 'react-bootstrap'
 import { ImSearch } from 'react-icons/im'
 import { IoAdd } from 'react-icons/io5'
+import { MdClear } from 'react-icons/md'
 
 const ClinicianList = () => {
   const dispatch = useDispatch()
 
   const [addClinicianModal, setAddClinicianModal] = useState(false);
 
-  const clinicianListFromStore = useSelector((state) => state.allClinicians.allClinicians)
+  const allClinicians = useSelector((state) => state.allClinicians.allClinicians)
 
   useEffect(() => {
-    setClinicianList(clinicianListFromStore)
-  }, [clinicianListFromStore])
+    setClinicianList(allClinicians)
+  }, [allClinicians])
 
   const [clinicianList, setClinicianList] = useState([])
   const [tempclinicianlist, settempclinicianlist] = useState([])
@@ -34,6 +35,8 @@ const ClinicianList = () => {
 
   const [cliniciancurrentindex, setcliniciancurrentindex] = useState(0)
   const [clinicianpage, setclinicianpage] = useState(cliniciancurrentindex)
+
+  const [queryString, setQueryString] = useState("")
 
   function incrementClinician() {
     if ((cliniciancurrentindex + 1) * limit < clinicianList.length) {
@@ -66,18 +69,49 @@ const ClinicianList = () => {
     }
   }
 
+  useEffect(() => {
+    function searchService() {
+      if (queryString !== "") {
+        let results = []
+        allClinicians.map((clinician, index) => {
+          let name = clinician.name.toLowerCase()
+          if (name.indexOf(queryString.toLowerCase()) > -1) {
+            results.push(clinician)
+          }
+        })
+        setClinicianList(results)
+      } else {
+        setClinicianList(allClinicians)
+      }
+    }
+    searchService()
+  }, [queryString])
+
+  function clearQuery() {
+    setQueryString("")
+    setClinicianList(allClinicians)
+  }
+
   return (
     <div>
       <div className='row'>
         <div className='col-lg-9 col-sm-6'>
           <div className='input-group m-1'>
-            <input type='text' placeholder='find clinicians' className="form-control"></input>
+            <input type='text'
+              value={queryString}
+              onChangeCapture={(e) => { setQueryString(e.target.value.toLowerCase()) }}
+              placeholder='find clinicians' className="form-control"></input>
             <button className='btn bg-dark text-white'><ImSearch /></button>
           </div>
         </div>
         <div className='col-lg-3 col-sm-6'>
-          <div className='btn m-1 std-border' onClick={() => setAddClinicianModal(true)}>
-            <IoAdd /> Add Clinician
+          <div className='d-flex'>
+            <div className='btn m-1 std-border' onClick={() => clearQuery()}>
+              <MdClear /> Clear
+            </div>
+            <div className='btn m-1 std-border' onClick={() => setAddClinicianModal(true)}>
+              <IoAdd /> Add Clinician
+            </div>
           </div>
         </div>
       </div>

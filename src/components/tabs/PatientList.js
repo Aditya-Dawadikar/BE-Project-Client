@@ -10,6 +10,7 @@ import { AiOutlineLink } from 'react-icons/ai'
 import { BsFillTrashFill } from 'react-icons/bs'
 import { ImSearch } from 'react-icons/im'
 import { IoAdd } from 'react-icons/io5'
+import { MdClear } from 'react-icons/md'
 
 import { useDispatch } from 'react-redux'
 import { deletePatientAction } from '../../redux/actions/patientListActions'
@@ -19,19 +20,19 @@ import { Link } from 'react-router-dom'
 const PatientList = () => {
     const dispatch = useDispatch()
 
-    const [patientList, setPatientList] = useState([])
     const [temppatientlist, settemppatientlist] = useState([])
-
+    const allPatients = useSelector((state) => state.allPatients.allPatients)
     const [addPatientModal, setAddPatientModal] = useState(false);
-    const patientListFromStore = useSelector((state) => state.allPatients.allPatients)
+    const [patientList, setPatientList] = useState(allPatients)
 
     const [limit, setlimit] = useState(5)
     const [patientcurrentindex, setpatientcurrentindex] = useState(0)
     const [patientpage, setpatientpage] = useState(patientcurrentindex)
+    const [queryString, setQueryString] = useState("")
 
     useEffect(() => {
-        setPatientList(patientListFromStore)
-    }, [patientListFromStore])
+        setPatientList(allPatients)
+    }, [allPatients])
 
     function incrementPatient() {
         if ((patientcurrentindex + 1) * limit < patientList.length) {
@@ -64,19 +65,51 @@ const PatientList = () => {
         }
     }
 
+    useEffect(() => {
+        function searchService() {
+            if (queryString !== "") {
+                let results = []
+                allPatients.map((patient, index) => {
+                    let name = patient.name.toLowerCase()
+                    if (name.indexOf(queryString.toLowerCase()) > -1) {
+                        results.push(patient)
+                    }
+                })
+                setPatientList(results)
+            } else {
+                setPatientList(allPatients)
+            }
+        }
+        searchService()
+    }, [queryString])
+
+    function clearQuery() {
+        setQueryString("")
+        setPatientList(allPatients)
+    }
+
     return (
         <div>
             <div className='row'>
                 <div className='col-lg-9 col-sm-6'>
                     <div className='input-group m-1'>
-                        <input type='text' placeholder='find patients...' className="form-control"></input>
+                        <input type='text'
+                            value={queryString}
+                            onChangeCapture={(e) => { setQueryString(e.target.value.toLowerCase()) }}
+                            placeholder='find patients...' className="form-control"></input>
                         <button className='btn bg-dark text-white'><ImSearch /></button>
                     </div>
                 </div>
                 <div className='col-lg-3 col-sm-6'>
-                    <div className='btn m-1 std-border' onClick={() => setAddPatientModal(true)}>
-                        <IoAdd /> Add patient
+                    <div className='d-flex'>
+                        <div className='btn m-1 std-border' onClick={() => clearQuery()}>
+                            <MdClear /> Clear
+                        </div>
+                        <div className='btn m-1 std-border' onClick={() => setAddPatientModal(true)}>
+                            <IoAdd /> Add patient
+                        </div>
                     </div>
+
                 </div>
             </div>
             <AddPatient
