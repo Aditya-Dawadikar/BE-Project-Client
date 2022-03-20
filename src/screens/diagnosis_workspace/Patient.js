@@ -13,9 +13,10 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { getClinicians } from '../../services/ClinicDataAPI'
 import { isAuthenticated } from '../../services/Auth'
-import {BsFillArrowUpCircleFill,BsSoundwave} from 'react-icons/bs'
+import { BsFillArrowUpCircleFill, BsSoundwave } from 'react-icons/bs'
 
 import { setCurrentClinician } from '../../redux/actions/consultancyActions'
+import { toast } from 'react-toastify'
 
 const Patient = () => {
     const dispatch = useDispatch()
@@ -71,15 +72,23 @@ const Patient = () => {
 
     const ReportViewControl = () => {
         return <div>
-            <button
-                className={segListFromStore.length > 0 ? 'btn std-border' : 'btn btn-secondary std-border'}
-                onClick={() => {
-                    setshowreport(!showreport)
-                    // window.scrollTo(0,1000)
-                }}>
-                <BsSoundwave className='m-1' />
-                Analyse
-            </button>
+            {
+                segListFromStore.length > 0 ? <button
+                    className='btn std-border'
+                    onClick={() => {
+                        setshowreport(!showreport)
+                    }}>
+                    <BsSoundwave className='m-1' />
+                    Analyse
+                </button> : <button
+                    className='btn btn-secondary std-border'
+                    onClick={() => {
+                        toast.error("Please Add segments to analyse")
+                    }}>
+                    <BsSoundwave className='m-1' />
+                    Analyse
+                </button>
+            }
             <br /><br />
             <p className='bg-warning p-1 text-center'>All the segments available in the segment list will be analysed</p>
             <br />
@@ -102,7 +111,7 @@ const Patient = () => {
     return (<div>
         <div>
             <ClinicNavigation />
-            <br/>
+            <br />
             <div className='container'>
                 <Tabs defaultActiveKey="Information" id="uncontrolled-tab-example" className="mb-3">
                     <Tab eventKey="Information" title="Information">

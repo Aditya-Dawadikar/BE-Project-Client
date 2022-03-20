@@ -11,7 +11,8 @@ import { useDispatch } from 'react-redux';
 import { setCurrentPatient } from '../../redux/actions/consultancyActions'
 import { IoReloadCircle } from 'react-icons/io5'
 import { AiOutlineLink } from 'react-icons/ai'
-import { MdOutlineHelp } from 'react-icons/md'
+
+import { IoCaretBackSharp, IoCaretForwardSharp } from 'react-icons/io5'
 
 const PatientInfo = () => {
     const dispatch = useDispatch()
@@ -21,8 +22,7 @@ const PatientInfo = () => {
     const [patient, setPatient] = useState({
     })
 
-    const [history, sethistory] = useState([
-    ])
+    const [history, sethistory] = useState([])
 
     const report = "https://storage.googleapis.com/be-project-4b4bf.appspot.com/reports/1644304931_93d573059e3c4fbd829585eadf78b541.pdf"
 
@@ -33,7 +33,7 @@ const PatientInfo = () => {
         let patient = await getPatientById(id, token)
         let history = await getPatientHistory(id, token)
         setPatient(patient)
-        sethistory(history)
+        sethistory(history.reverse())
         dispatch(setCurrentPatient(patient))
     }
 
@@ -43,6 +43,35 @@ const PatientInfo = () => {
 
     const severity = ['asymptomatic', 'moderate manifestation', 'major manifestation', 'catastrophic manifestation']
     const severitycode = ['#84ff00', '#fff222', '#ff5e00', '#ff0000']
+
+    const [limit, setlimit] = useState(5)
+    const [patientcurrentindex, setpatientcurrentindex] = useState(0)
+    const [patientpage, setpatientpage] = useState(patientcurrentindex)
+    const [temppatientlist, settemppatientlist] = useState([])
+
+    function incrementPatient() {
+        if ((patientcurrentindex + 1) * limit < history.length) {
+            setpatientcurrentindex(patientcurrentindex + 1)
+        }
+    }
+    function decrementPatient() {
+        if (patientcurrentindex >= 1) {
+            setpatientcurrentindex(patientcurrentindex - 1)
+        }
+    }
+
+    useEffect(() => {
+        function pagination() {
+            let pageinfo = (patientcurrentindex * limit + 1) + "-" + (Math.min(patientcurrentindex * limit + limit, history.length)) + "/" + history.length
+            setpatientpage(pageinfo)
+            settemppatientlist(history.slice(patientcurrentindex * limit, patientcurrentindex * limit + limit))
+        }
+
+        if (history.length > 0) {
+            pagination()
+        }
+
+    }, [patientcurrentindex, history])
 
     return <div className='container'>
         <div className='h4'><img className="m-1" src={PatientIcon} style={{ width: "40px" }} />Patient: {patient.name}</div>
@@ -87,8 +116,8 @@ const PatientInfo = () => {
             </thead>
             <tbody>
                 {
-                    history.map((entry, index) => {
-                        return <tr>
+                    temppatientlist.map((entry, index) => {
+                        return <tr key={index}>
                             <td>{entry.date}</td>
                             <td>{entry.clinician}</td>
                             <td style={{ wordWrap: "break-word" }}>{entry.symptoms}</td>
@@ -104,6 +133,14 @@ const PatientInfo = () => {
                 }
             </tbody>
         </Table>
+        <br />
+        <div className='d-flex justify-content-center'>
+            <div className='d-flex'>
+                <div className='btn' onClick={() => { decrementPatient() }}><IoCaretBackSharp /></div>
+                <b className='my-2'>Showing Patients {patientpage}</b>
+                <div className='btn' onClick={() => { incrementPatient() }}><IoCaretForwardSharp /></div>
+            </div>
+        </div>
     </div>;
 };
 

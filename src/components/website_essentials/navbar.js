@@ -11,8 +11,6 @@ const CNavbar = () => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="#">Documentation</Nav.Link>
-                    <Nav.Link href="#">Pricing</Nav.Link>
                     <Nav.Link href="/about">About us</Nav.Link>
                     </Nav>
                     <Nav>

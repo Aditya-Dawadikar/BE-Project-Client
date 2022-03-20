@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Table } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { useSelector } from 'react-redux'
+import { deleteClinicianAction } from '../../redux/actions/clinicianListActions'
 
-import ClinicianHorizontal from '../cards/Clinician Cards/ClinicianHorizontal'
-import AddClinician from '../forms/AddClinician'
-
-import { IoCaretBackSharp, IoCaretForwardSharp } from 'react-icons/io5'
+import { ImSearch } from 'react-icons/im'
+import { MdClear } from 'react-icons/md'
+import { IoAdd, IoCaretBackSharp, IoCaretForwardSharp } from 'react-icons/io5'
 import { AiOutlineLink } from 'react-icons/ai'
 import { BsFillTrashFill } from 'react-icons/bs'
 
-import { useDispatch } from 'react-redux'
-import { deleteClinicianAction } from '../../redux/actions/clinicianListActions'
-import { Link } from 'react-router-dom'
-import { Table } from 'react-bootstrap'
-import { ImSearch } from 'react-icons/im'
-import { IoAdd } from 'react-icons/io5'
-import { MdClear } from 'react-icons/md'
+import AddClinician from '../forms/AddClinician'
+
 
 const ClinicianList = () => {
   const dispatch = useDispatch()
@@ -133,7 +130,7 @@ const ClinicianList = () => {
               </thead>
               <tbody>
                 {tempclinicianlist.map((clinician, index) => {
-                  return <tr>
+                  return <tr key={index}>
                     <td>
                       <Link className='text-decoration-none' to={`/clinic/clinician?id=${clinician.doctor_id}`}>
                         <AiOutlineLink className='m-1' />

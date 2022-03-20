@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Table } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
-
-import PatientHorizontal from '../../components/cards/Patient Cards/PatientHorizontal'
-import AddPatient from '../../components/forms/AddPatient'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { IoCaretBackSharp, IoCaretForwardSharp } from 'react-icons/io5'
 import { AiOutlineLink } from 'react-icons/ai'
@@ -12,10 +10,9 @@ import { ImSearch } from 'react-icons/im'
 import { IoAdd } from 'react-icons/io5'
 import { MdClear } from 'react-icons/md'
 
-import { useDispatch } from 'react-redux'
 import { deletePatientAction } from '../../redux/actions/patientListActions'
 
-import { Link } from 'react-router-dom'
+import AddPatient from '../../components/forms/AddPatient'
 
 const PatientList = () => {
     const dispatch = useDispatch()
@@ -130,7 +127,7 @@ const PatientList = () => {
                             </thead>
                             <tbody>
                                 {temppatientlist.map((patient, index) => {
-                                    return <tr>
+                                    return <tr key={index}>
                                         <td>
                                             <Link className='text-decoration-none' to={`/clinic/patient?id=${patient.patient_id}`}>
                                                 <AiOutlineLink className='m-1' />
