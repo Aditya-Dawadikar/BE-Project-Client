@@ -250,6 +250,18 @@ const AudioEditor = () => {
         playAudio()
     }
 
+    function getDuration(){
+        let min = String(parseInt(audio.duration/60))
+        let sec = String(parseInt(audio.duration))
+        if(min.length<2){
+            min = "0"+min
+        }
+        if(sec.length<2){
+            sec = "0"+sec
+        }
+        return min+":"+sec
+    }
+
     return (
         <div>
             <div className='d-flex'>
@@ -311,7 +323,7 @@ const AudioEditor = () => {
                             value={instance}
                         />
                         <div className='d-flex justify-content-center align-items-center'>
-                            00:00/00:00
+                            00:00/{getDuration()}
                         </div>
                         <div className='d-flex justify-content-center align-items-center'>
                             <button className='btn std-border mx-2' onClick={pauseAudio}><BsPauseFill />Pause</button>

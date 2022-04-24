@@ -20,7 +20,15 @@ const AutomatedDiagnosis = ({ summary }) => {
                 </ul>
             </div>
             <div className='col'>
-                <p className='h4'>Abnormality Analysis</p>
+
+            </div>
+        </div>
+    </div>;
+};
+
+export default AutomatedDiagnosis;
+
+{/* <p className='h4'>Abnormality Analysis</p>
                 <ul className='list-group'>
                     {
                         summary.abnormality.class.map((ele, index) => {
@@ -32,10 +40,4 @@ const AutomatedDiagnosis = ({ summary }) => {
                             </li>
                         })
                     }
-                </ul>
-            </div>
-        </div>
-    </div>;
-};
-
-export default AutomatedDiagnosis;
+                </ul> */}

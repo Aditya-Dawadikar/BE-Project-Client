@@ -101,7 +101,7 @@ const DataContainer = ({ segid }) => {
                             </div>
                         </div>
                     </li>
-                    <li className='list-group-item'>
+                    {/* <li className='list-group-item'>
                         <div className='row'>
                             <div className='col text-end'>
                                 <b>Abnormality :</b>
@@ -110,7 +110,7 @@ const DataContainer = ({ segid }) => {
                                 {segListFromStore[segid].analysis.summary.abnormality || ""}
                             </div>
                         </div>
-                    </li>
+                    </li> */}
                     <li className='list-group-item'>
                         <div className='row'>
                             <div className='col text-end'>
@@ -139,7 +139,7 @@ const DataContainer = ({ segid }) => {
                                         <b>{Object.keys(segListFromStore[segid].analysis.disorder)[it]} :</b>
                                     </div>
                                     <div className='col'>
-                                        {(Object.values(segListFromStore[segid].analysis.disorder)[it] * 100).toPrecision(2)}%
+                                        {(Object.values(segListFromStore[segid].analysis.disorder)[it] * 100)}%
                                     </div>
                                 </div>
                             </li>
@@ -149,7 +149,16 @@ const DataContainer = ({ segid }) => {
             }
         </div>
         <div className='col'>
-            <b className='h4'>Abnormality Analysis</b>
+            
+        </div>
+    </div>
+
+};
+
+export default DataContainer;
+
+// 
+{/* <b className='h4'>Abnormality Analysis</b>
             {
                 isFetched === true ? <ul className='list-group'>
                     {
@@ -160,17 +169,11 @@ const DataContainer = ({ segid }) => {
                                         <b>{Object.keys(segListFromStore[segid].analysis.abnormality)[it]} :</b>
                                     </div>
                                     <div className='col'>
-                                        {(Object.values(segListFromStore[segid].analysis.abnormality)[it] * 100).toPrecision(2)}%
+                                        {(Object.values(segListFromStore[segid].analysis.abnormality)[it] * 100)}%
                                     </div>
                                 </div>
                             </li>
                         })
                     }
                 </ul> : <></>
-            }
-        </div>
-    </div>
-
-};
-
-export default DataContainer;
+            } */}
